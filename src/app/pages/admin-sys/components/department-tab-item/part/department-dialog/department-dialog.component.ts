@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppServiceService } from 'app/pages/admin-sys/services/app.service.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CreateDepartmentRequestDTO, UpdateDepartmentRequestDTO } from 'app/pages/admin-sys/dto';
 
 @Component({
   selector: 'app-department-dialog',
@@ -60,19 +61,17 @@ export class DepartmentDialogComponent {
 
     switch (this.data.dialogType) {
       case 'create':
-        this.appService.addDepartment({
-          departmentName: departmentName,
-        }).subscribe({
+        this.appService.addDepartment({departmentName}).subscribe({
           next: resultModel => this.dialogRef.close(resultModel),
           error: err => this.parseErrorsFromServer(err)
         });
         break;
 
       case 'update':
-        this.appService.updateDepartment({
-          departmentID: this.department().departmentID,
-          departmentName: departmentName,
-        }).subscribe({
+        let departmentID = this.department().departmentID;
+        if (departmentID == undefined) throw new Error('departmentID is undefined');
+
+        this.appService.updateDepartment({departmentName, departmentID}).subscribe({
           next: resultModel => this.dialogRef.close(resultModel),
           error: err => this.parseErrorsFromServer(err)
         });

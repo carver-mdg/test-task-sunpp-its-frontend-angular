@@ -3,7 +3,9 @@ import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/c
 import { AppSettings } from 'app/AppSettings';
 import { DepartmentModel } from 'app/models';
 import { map, Observable } from 'rxjs';
-import { ICreateDepartmentsSendingDTO, ICreateDepartmentsReceivedDTO, IReadDepartmentsReceivedDTO, IUpdateDepartmentsReceivedDTO } from '../dto';
+import { CreateDepartmentRequestDTO, DepartmentResponseDTO, UpdateDepartmentRequestDTO } from '../dto';
+// import { IDepartmentsResponseDTO, ICreateDepartmentsRequestDTO, IUpdateDepartmentsRequestDTO } from '../dto';
+// import { ICreateDepartmentsSendingDTO, ICreateDepartmentsReceivedDTO, IReadDepartmentsReceivedDTO, IUpdateDepartmentsReceivedDTO } from '../dto';
 
 @Injectable({
   providedIn: 'root'
@@ -23,20 +25,12 @@ export class AppServiceService {
    * 
    * @returns 
    */
-  // reloadDepartmentsFromServer(): Observable<IReadDepartmentsReceivedDTO[]> {
-  //   return this.http.get<IReadDepartmentsReceivedDTO[]>(`${this.appSettings.baseUrlAPI}/api/v1/departments/`);
-  // }
-
-  /**
-   * 
-   * @returns 
-   */
   loadDepartments(): Observable<DepartmentModel[]> {
-    return this.http.get<IReadDepartmentsReceivedDTO[]>(`${this.appSettings.baseUrlAPI}/api/v1/departments/`).
-      pipe(map((departmentsDTO: IReadDepartmentsReceivedDTO[]) => {
+    return this.http.get<DepartmentResponseDTO[]>(`${this.appSettings.baseUrlAPI}/api/v1/departments/`).
+      pipe(map((departmentsDTO) => {
         let departments: DepartmentModel[] = [];
         departmentsDTO.forEach(itemDepartmentDTO =>
-          departments.push(DepartmentModel.createFromDTO(itemDepartmentDTO))
+          departments.push(DepartmentResponseDTO.toModel(itemDepartmentDTO))
         )
         return departments;
       }))
@@ -47,11 +41,9 @@ export class AppServiceService {
    * @param departmentToServer 
    * @returns 
    */
-  addDepartment(departmentToServer: ICreateDepartmentsSendingDTO): Observable<DepartmentModel> {
-    return this.http.post<ICreateDepartmentsReceivedDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/`, departmentToServer).
-      pipe(map((departmentsDTO: ICreateDepartmentsReceivedDTO) =>
-        DepartmentModel.createFromDTO(departmentsDTO)
-      ));
+  addDepartment(departmentToServer: CreateDepartmentRequestDTO): Observable<DepartmentModel> {
+    return this.http.post<DepartmentResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/`, departmentToServer).
+      pipe(map(departmentsDTO => DepartmentResponseDTO.toModel(departmentsDTO)));
   }
 
   /**
@@ -59,11 +51,9 @@ export class AppServiceService {
    * @param department 
    * @returns 
    */
-  updateDepartment(department: DepartmentModel): Observable<DepartmentModel> {
-    return this.http.put<IUpdateDepartmentsReceivedDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/${department.departmentID}`, department).
-      pipe(map((departmentsDTO: IUpdateDepartmentsReceivedDTO) =>
-        DepartmentModel.createFromDTO(departmentsDTO)
-      ));
+  updateDepartment(department: UpdateDepartmentRequestDTO): Observable<DepartmentModel> {
+    return this.http.put<DepartmentResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/${department.departmentID}`, department).
+      pipe(map(departmentsDTO => DepartmentResponseDTO.toModel(departmentsDTO)));
   }
 
   /**
@@ -72,6 +62,7 @@ export class AppServiceService {
    * @returns 
    */
   deleteDepartment(departmentID: number): Observable<DepartmentModel> {
-    return this.http.delete<DepartmentModel>(`${this.appSettings.baseUrlAPI}/api/v1/departments/${departmentID}`);
+    return this.http.delete<DepartmentResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/${departmentID}`).
+      pipe(map(departmentsDTO => DepartmentResponseDTO.toModel(departmentsDTO)));
   }
 }

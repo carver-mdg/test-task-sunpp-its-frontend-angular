@@ -1,16 +1,44 @@
-// Interfaces to receive from server
-export interface ICreateDepartmentsReceivedDTO {
-  departmentID: number;
-  departmentName: string;
-}
-export interface IReadDepartmentsReceivedDTO extends ICreateDepartmentsReceivedDTO { }
-export interface IUpdateDepartmentsReceivedDTO extends ICreateDepartmentsReceivedDTO { }
+import { DepartmentModel } from "app/models";
 
 
-// Interfaces to sending to server
-export interface ICreateDepartmentsSendingDTO {
-  departmentName: string;
+/**
+ * Response from server
+ */
+export class DepartmentResponseDTO {
+  departmentID!: number;
+  departmentName!: string;
+
+  static toModel(dto: DepartmentResponseDTO): DepartmentModel {
+    return {
+      departmentID: dto.departmentID,
+      departmentName: dto.departmentName
+    }
+  }
 }
-export interface IUpdateDepartmentsSendingDTO extends ICreateDepartmentsSendingDTO {
-  departmentID: number;
+
+/**
+ * DTO for sending to server for create
+ */
+export class CreateDepartmentRequestDTO {
+  departmentName!: string;
+
+  static toModel(dto: CreateDepartmentRequestDTO): DepartmentModel {
+    return {
+      departmentID: undefined,
+      departmentName: dto.departmentName
+    }
+  }
+}
+
+/**
+ * DTO for sending to server for update
+ */
+export class UpdateDepartmentRequestDTO extends CreateDepartmentRequestDTO {
+  departmentID!: number;
+
+  static override toModel(dto: UpdateDepartmentRequestDTO): DepartmentModel {
+    let response = super.toModel(dto);
+    response.departmentID = dto.departmentID;
+    return response;
+  }
 }
