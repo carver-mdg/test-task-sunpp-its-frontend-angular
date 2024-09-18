@@ -1,0 +1,11 @@
+<div class="tab-item">
+  <button mat-raised-button color="primary" extended aria-label="Add new department"
+    (click)="openDialogCreateDepartment()">
+    Добавить новый цех
+    <mat-icon>add</mat-icon>
+  </button>
+  <br />
+
+  <app-department-list [departments]="departments" (editDepartmentEvent)="onEditDepartment($event)"
+    (deleteDepartmentEvent)="onDeleteDepartment($event)" />
+</div>

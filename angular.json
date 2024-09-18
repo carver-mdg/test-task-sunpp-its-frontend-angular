@@ -32,6 +32,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/cyan-orange.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -91,6 +92,7 @@
               }
             ],
             "styles": [
+              "@angular/material/prebuilt-themes/cyan-orange.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -98,5 +100,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "da86c241-88bc-42dc-9dc4-dfd68c51d890"
   }
 }

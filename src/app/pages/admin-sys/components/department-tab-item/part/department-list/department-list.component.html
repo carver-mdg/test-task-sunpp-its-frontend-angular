@@ -1,0 +1,33 @@
+@if(!departments.length) {
+  <h1 align="center"> Данные отсутствуют :( </h1>
+}
+@else {
+<table mat-table [dataSource]="departments" class="mat-elevation-z8">
+  <ng-container matColumnDef="departmentID">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let department"> {{department.departmentID}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="departmentName">
+    <th mat-header-cell *matHeaderCellDef> Название </th>
+    <td mat-cell *matCellDef="let department"> {{department.departmentName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Действия </th>
+    <td mat-cell *matCellDef="let department">
+      <button mat-raised-button color="primary" class="button button-small" aria-label="Edit department"
+        (click)="onEditDepartment(department)">
+        <i class="material-icons">edit</i>
+      </button>
+      <button mat-raised-button color="primary" class="button button-small button-delete" aria-label="Delete department"
+        (click)="onDeleteDepartment(department)">
+        <i class="material-icons">delete</i>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+}

@@ -1,0 +1,18 @@
+.center-of-window {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-window {
+  background-color: #ccc;
+}
+
+.auth-btn {
+  background-color: bisque;
+}
+
+.auth-input {
+  width: 200px;
+}

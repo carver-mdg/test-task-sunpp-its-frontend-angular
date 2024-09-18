@@ -1,0 +1,19 @@
+<h3 mat-dialog-title>
+  {{data.dialogTitle}}
+</h3>
+<mat-divider />
+
+<mat-dialog-content>
+  {{data.dialogContent}}
+</mat-dialog-content>
+<mat-divider />
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onClickYes()">
+    <!-- @if(data.dialogBtnYesTitle) {} -->
+    {{data.dialogBtnYesTitle || 'Yes'}}
+  </button>
+  <button mat-button (click)="onClickNo()">
+    {{data.dialogBtnNoTitle || 'No'}}
+  </button>
+</mat-dialog-actions>

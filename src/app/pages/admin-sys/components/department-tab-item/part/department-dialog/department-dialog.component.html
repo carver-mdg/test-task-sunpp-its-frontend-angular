@@ -1,0 +1,28 @@
+<h3 mat-dialog-title>
+  @if(department().dialogType == 'create') { Добавить цех }
+  @else if(department().dialogType == 'update') { Обновить цех }
+</h3>
+<mat-divider />
+
+<mat-dialog-content>
+  <mat-form-field class="field-input">
+    <mat-label>Название цеха</mat-label>
+    <!-- <input matInput [(ngModel)]="department().departmentName" (blur)="updateErrMsgAtFieldName()" required /> -->
+    <input matInput [(ngModel)]="department().departmentName" required />
+    @if (department().departmentName) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="department().departmentName=''">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+    @if(dialogCheckingFieldResult.isErrgAtFieldName()) {
+    <mat-error>{{dialogCheckingFieldResult.errMsgAtFieldName()}}</mat-error>
+    }
+  </mat-form-field>
+</mat-dialog-content>
+<mat-divider />
+
+<mat-dialog-actions>
+  <!-- <button mat-button [mat-dialog-close]="department()" cdkFocusInitial>Ok</button> -->
+  <button mat-button (click)="onClickOk()">Ok</button>
+  <button mat-button (click)="onClickCancel()"> Cancel </button>
+</mat-dialog-actions>
