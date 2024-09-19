@@ -1,19 +1,15 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { computed, Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { AppSettings } from 'app/AppSettings';
 import { DepartmentModel } from 'app/models';
 import { map, Observable } from 'rxjs';
 import { CreateDepartmentRequestDTO, DepartmentResponseDTO, UpdateDepartmentRequestDTO } from '../dto';
-// import { IDepartmentsResponseDTO, ICreateDepartmentsRequestDTO, IUpdateDepartmentsRequestDTO } from '../dto';
-// import { ICreateDepartmentsSendingDTO, ICreateDepartmentsReceivedDTO, IReadDepartmentsReceivedDTO, IUpdateDepartmentsReceivedDTO } from '../dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppServiceService {
   appSettings = new AppSettings();
-  // private departmentsState: WritableSignal<DepartmentModel[]> = signal<DepartmentModel[]>([]);
-  // readonly departments: Signal<DepartmentModel[]> = computed(() => this.departmentsState());
 
   /**
    * 
@@ -61,8 +57,7 @@ export class AppServiceService {
    * @param departmentID 
    * @returns 
    */
-  deleteDepartment(departmentID: number): Observable<DepartmentModel> {
-    return this.http.delete<DepartmentResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/${departmentID}`).
-      pipe(map(departmentsDTO => DepartmentResponseDTO.toModel(departmentsDTO)));
+  deleteDepartment(departmentID: number): Observable<void> {
+    return this.http.delete<void>(`${this.appSettings.baseUrlAPI}/api/v1/departments/${departmentID}`);
   }
 }

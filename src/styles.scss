@@ -10,3 +10,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .tab-item {
   padding: 5px;
 }
+
+.snackbar-error {
+  .mdc-snackbar__surface {
+    background-color: red !important;
+    color: black !important;
+  }
+  .mat-mdc-snack-bar-actions {
+    button{
+      color: greenyellow !important;
+      background-color: brown !important;
+    }
+  }
+}

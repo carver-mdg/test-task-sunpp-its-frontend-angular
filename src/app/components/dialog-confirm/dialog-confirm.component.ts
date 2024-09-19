@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogContent, MatDialogTitle } from '@angular/material/dialog';
-import { IDialogDataConfirm } from './types/IDialogDataConfirm';
+import { IDialogConfirmData } from './types/IDialogConfirmData';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+import { IDialogConfirmResponse } from './types';
 
 @Component({
   selector: 'app-dialog-confirm',
@@ -19,20 +20,23 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './dialog-confirm.component.scss'
 })
 export class DialogConfirmComponent {
-  readonly dialogRef = inject(MatDialogRef<DialogConfirmComponent>);
-  readonly data = inject<IDialogDataConfirm>(MAT_DIALOG_DATA);
+  readonly dialogRef = inject(MatDialogRef<DialogConfirmComponent, IDialogConfirmResponse>);
+  readonly data = inject<IDialogConfirmData>(MAT_DIALOG_DATA);
+  dialogResponse?: IDialogConfirmResponse = undefined;
 
   /**
    * 
    */
   onClickYes(): void {
-    this.dialogRef.close(true);
+    this.dialogResponse = { response: 'yes' };
+    this.dialogRef.close(this.dialogResponse);
   }
 
   /**
    * 
    */
   onClickNo(): void {
-    this.dialogRef.close(false);
+    this.dialogResponse = { response: 'no' };
+    this.dialogRef.close(this.dialogResponse);
   }
 }

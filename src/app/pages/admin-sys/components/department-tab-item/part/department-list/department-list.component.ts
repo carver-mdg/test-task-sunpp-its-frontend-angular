@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, signal, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,11 +8,11 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DepartmentModel } from 'app/models';
 import { AppServiceService } from 'app/pages/admin-sys/services/app.service.service';
 import { DepartmentDialogComponent } from '../department-dialog/department-dialog.component';
-import { IDepartmentDialogData } from '../department-dialog/types/IDepartmentDialogData';
 import { DialogConfirmComponent } from 'app/components/dialog-confirm/dialog-confirm.component';
-import { IDialogDataConfirm } from 'app/components/dialog-confirm/types';
+import { IDialogConfirmData, IDialogConfirmResponse } from 'app/components/dialog-confirm/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { IDialogDepartmentData, IDialogDepartmentResponse } from '../department-dialog/types';
 
 @Component({
   selector: 'app-department-list',
@@ -40,17 +40,20 @@ export class DepartmentListComponent {
    * @param department 
    */
   onEditDepartment(department: DepartmentModel) {
-    const dialogRef: MatDialogRef<DepartmentDialogComponent, IDepartmentDialogData>
-      = this.dialog.open<DepartmentDialogComponent, IDepartmentDialogData>(DepartmentDialogComponent, {
-        data: { dialogType: 'update', departmentID: department.departmentID, departmentName: department.departmentName },
+    const dialogRef: MatDialogRef<DepartmentDialogComponent, IDialogDepartmentResponse>
+      = this.dialog.open<DepartmentDialogComponent, IDialogDepartmentData, IDialogDepartmentResponse>(DepartmentDialogComponent, {
+        data: {
+          dialogType: 'update',
+          department: { departmentID: department.departmentID, departmentName: department.departmentName }
+        },
       });
 
     dialogRef.afterClosed().subscribe(resultDialog => {
-      if (resultDialog == undefined || resultDialog.departmentName == undefined) return;
+      if (resultDialog == undefined) return
 
       this.editDepartmentEvent.emit({
-        departmentID: resultDialog.departmentID,
-        departmentName: resultDialog.departmentName,
+        departmentID: resultDialog.response.departmentID,
+        departmentName: resultDialog.response.departmentName,
       });
     });
   }
@@ -60,7 +63,7 @@ export class DepartmentListComponent {
    * @param department 
    */
   onDeleteDepartment(department: DepartmentModel) {
-    const dialogRef = this.dialog.open<DialogConfirmComponent, IDialogDataConfirm>(DialogConfirmComponent, {
+    const dialogRef = this.dialog.open<DialogConfirmComponent, IDialogConfirmData, IDialogConfirmResponse>(DialogConfirmComponent, {
       data: {
         dialogTitle: 'Удалить запись',
         dialogContent: 'Вы хотите удалить запись ?',
@@ -69,17 +72,18 @@ export class DepartmentListComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result && department.departmentID != undefined) {
+    dialogRef.afterClosed().subscribe(resultDialog => {
+      if (resultDialog?.response == 'yes' && department.departmentID != undefined) {
 
         this.appService.deleteDepartment(department.departmentID).subscribe({
           next: () => this.deleteDepartmentEvent.emit(department),
           error: (error) => {
             if (error instanceof HttpErrorResponse)
-              this.snackBar.open(error.message, '', {
+              this.snackBar.open(error.message, 'Ok', {
                 duration: 3000,
+                horizontalPosition: 'center',
                 verticalPosition: 'top',
-                panelClass: []
+                panelClass: ['snackbar-error'],
               });
           }
         });

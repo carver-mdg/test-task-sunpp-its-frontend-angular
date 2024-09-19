@@ -1,4 +1,4 @@
-export interface IDialogDataConfirm {
+export interface IDialogConfirmData {
   dialogTitle: string;
   dialogContent: string;
   dialogBtnYesTitle?: string;
