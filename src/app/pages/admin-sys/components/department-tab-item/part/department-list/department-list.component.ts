@@ -9,10 +9,10 @@ import { DepartmentModel } from 'app/models';
 import { AppServiceService } from 'app/pages/admin-sys/services/app.service.service';
 import { DepartmentDialogComponent } from '../department-dialog/department-dialog.component';
 import { DialogConfirmComponent } from 'app/components/dialog-confirm/dialog-confirm.component';
-import { IDialogConfirmData, IDialogConfirmResponse } from 'app/components/dialog-confirm/types';
+import { IDialogConfirmData, IDialogConfirmResult } from 'app/components/dialog-confirm/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
-import { IDialogDepartmentData, IDialogDepartmentResponse } from '../department-dialog/types';
+import { IDialogDepartmentData, IDialogDepartmentResult } from '../department-dialog/types';
 
 @Component({
   selector: 'app-department-list',
@@ -40,8 +40,8 @@ export class DepartmentListComponent {
    * @param department 
    */
   onEditDepartment(department: DepartmentModel) {
-    const dialogRef: MatDialogRef<DepartmentDialogComponent, IDialogDepartmentResponse>
-      = this.dialog.open<DepartmentDialogComponent, IDialogDepartmentData, IDialogDepartmentResponse>(DepartmentDialogComponent, {
+    const dialogRef: MatDialogRef<DepartmentDialogComponent, IDialogDepartmentResult>
+      = this.dialog.open<DepartmentDialogComponent, IDialogDepartmentData, IDialogDepartmentResult>(DepartmentDialogComponent, {
         data: {
           dialogType: 'update',
           department: { departmentID: department.departmentID, departmentName: department.departmentName }
@@ -52,8 +52,8 @@ export class DepartmentListComponent {
       if (resultDialog == undefined) return
 
       this.editDepartmentEvent.emit({
-        departmentID: resultDialog.response.departmentID,
-        departmentName: resultDialog.response.departmentName,
+        departmentID: resultDialog.result.departmentID,
+        departmentName: resultDialog.result.departmentName,
       });
     });
   }
@@ -63,7 +63,7 @@ export class DepartmentListComponent {
    * @param department 
    */
   onDeleteDepartment(department: DepartmentModel) {
-    const dialogRef = this.dialog.open<DialogConfirmComponent, IDialogConfirmData, IDialogConfirmResponse>(DialogConfirmComponent, {
+    const dialogRef = this.dialog.open<DialogConfirmComponent, IDialogConfirmData, IDialogConfirmResult>(DialogConfirmComponent, {
       data: {
         dialogTitle: 'Удалить запись',
         dialogContent: 'Вы хотите удалить запись ?',
@@ -73,7 +73,7 @@ export class DepartmentListComponent {
     });
 
     dialogRef.afterClosed().subscribe(resultDialog => {
-      if (resultDialog?.response == 'yes' && department.departmentID != undefined) {
+      if (resultDialog?.result == 'yes' && department.departmentID != undefined) {
 
         this.appService.deleteDepartment(department.departmentID).subscribe({
           next: () => this.deleteDepartmentEvent.emit(department),

@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDia
 import { IDialogConfirmData } from './types/IDialogConfirmData';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { IDialogConfirmResponse } from './types';
+import { IDialogConfirmResult } from './types';
 
 @Component({
   selector: 'app-dialog-confirm',
@@ -20,23 +20,23 @@ import { IDialogConfirmResponse } from './types';
   styleUrl: './dialog-confirm.component.scss'
 })
 export class DialogConfirmComponent {
-  readonly dialogRef = inject(MatDialogRef<DialogConfirmComponent, IDialogConfirmResponse>);
+  readonly dialogRef = inject(MatDialogRef<DialogConfirmComponent, IDialogConfirmResult>);
   readonly data = inject<IDialogConfirmData>(MAT_DIALOG_DATA);
-  dialogResponse?: IDialogConfirmResponse = undefined;
+  dialogResult?: IDialogConfirmResult = undefined;
 
   /**
    * 
    */
   onClickYes(): void {
-    this.dialogResponse = { response: 'yes' };
-    this.dialogRef.close(this.dialogResponse);
+    this.dialogResult = { result: 'yes' };
+    this.dialogRef.close(this.dialogResult);
   }
 
   /**
    * 
    */
   onClickNo(): void {
-    this.dialogResponse = { response: 'no' };
-    this.dialogRef.close(this.dialogResponse);
+    this.dialogResult = { result: 'no' };
+    this.dialogRef.close(this.dialogResult);
   }
 }

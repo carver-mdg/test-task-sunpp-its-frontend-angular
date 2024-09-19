@@ -1,2 +1,2 @@
 export * from './IDialogConfirmData';
-export * from './IDialogConfirmResponse';
+export * from './IDialogConfirmResult';

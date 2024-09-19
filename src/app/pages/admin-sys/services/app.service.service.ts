@@ -39,7 +39,7 @@ export class AppServiceService {
    */
   addDepartment(departmentToServer: CreateDepartmentRequestDTO): Observable<DepartmentModel> {
     return this.http.post<DepartmentResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/`, departmentToServer).
-      pipe(map(departmentsDTO => DepartmentResponseDTO.toModel(departmentsDTO)));
+      pipe(map(departmentDTO => DepartmentResponseDTO.toModel(departmentDTO)));
   }
 
   /**
@@ -49,7 +49,7 @@ export class AppServiceService {
    */
   updateDepartment(department: UpdateDepartmentRequestDTO): Observable<DepartmentModel> {
     return this.http.put<DepartmentResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/${department.departmentID}`, department).
-      pipe(map(departmentsDTO => DepartmentResponseDTO.toModel(departmentsDTO)));
+      pipe(map(departmentDTO => DepartmentResponseDTO.toModel(departmentDTO)));
   }
 
   /**

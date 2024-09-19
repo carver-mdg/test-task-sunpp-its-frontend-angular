@@ -10,7 +10,7 @@ import { AppServiceService } from 'app/pages/admin-sys/services/app.service.serv
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DepartmentModel } from 'app/models';
-import { IDialogDepartmentData, IDialogDepartmentResponse } from './types';
+import { IDialogDepartmentData, IDialogDepartmentResult } from './types';
 
 @Component({
   selector: 'app-department-dialog',
@@ -34,7 +34,7 @@ export class DepartmentDialogComponent {
   readonly dialogRef = inject(MatDialogRef<DepartmentDialogComponent, DepartmentModel>);
   readonly data = inject<IDialogDepartmentData>(MAT_DIALOG_DATA);
   readonly department = model(this.data);
-  dialogResponse?: IDialogDepartmentResponse = undefined;
+  dialogResult?: IDialogDepartmentResult = undefined;
 
   dialogCheckingFieldResult = {
     isErrgAtFieldName: signal(false),
@@ -64,8 +64,8 @@ export class DepartmentDialogComponent {
       case 'create':
         this.appService.addDepartment({ departmentName }).subscribe({
           next: resultModel => {
-            this.dialogResponse = { response: resultModel };
-            this.dialogRef.close(this.dialogResponse);
+            this.dialogResult = { result: resultModel };
+            this.dialogRef.close(this.dialogResult);
           },
           error: err => this.parseErrorsFromServer(err)
         });
@@ -77,8 +77,8 @@ export class DepartmentDialogComponent {
 
         this.appService.updateDepartment({ departmentName, departmentID }).subscribe({
           next: resultModel => {
-            this.dialogResponse = {response: resultModel};
-            this.dialogRef.close(this.dialogResponse);
+            this.dialogResult = {result: resultModel};
+            this.dialogRef.close(this.dialogResult);
           },
           error: err => this.parseErrorsFromServer(err)
         });
