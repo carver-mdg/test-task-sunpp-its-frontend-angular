@@ -1,13 +1,16 @@
-<nav>
-  <a class="button" routerLink="/admin-sys" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
-    admin-sys
-  </a>
-  <a class="button" routerLink="/services" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
-    services
-  </a> 
-</nav>
+<div class="mat-typography app-frame mat-app-background">
+  <nav>
+    <a class="button" routerLink="/admin-sys" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
+      admin-sys
+    </a>
+    <a class="button" routerLink="/services" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
+      services
+    </a>
+  </nav>
 
-<router-outlet />
+  <router-outlet />
+
+</div>
 
 <style>
   .button {

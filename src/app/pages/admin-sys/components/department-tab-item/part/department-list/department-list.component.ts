@@ -1,45 +1,50 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { AsyncPipe, JsonPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DepartmentModel } from 'app/models';
-import { AppServiceService } from 'app/pages/admin-sys/services/app.service.service';
 import { DepartmentDialogComponent } from '../department-dialog/department-dialog.component';
 import { DialogConfirmComponent } from 'app/components/dialog-confirm/dialog-confirm.component';
 import { IDialogConfirmData, IDialogConfirmResult } from 'app/components/dialog-confirm/types';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IDialogDepartmentData, IDialogDepartmentResult } from '../department-dialog/types';
+import { AdminSysService } from 'app/pages/admin-sys/services/admin-sys.service';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PageState } from 'app/pages/admin-sys/PageState';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-department-list',
   standalone: true,
-  imports: [AsyncPipe, MatTabsModule, MatTableModule, MatButtonModule, MatIconModule],
+  imports: [AsyncPipe, MatTabsModule, MatTableModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule, MatExpansionModule, JsonPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './department-list.component.html',
   styleUrl: './department-list.component.scss'
 })
 export class DepartmentListComponent {
-  @Input() departments: DepartmentModel[] = [];
-  @Output() editDepartmentEvent = new EventEmitter<DepartmentModel>();
-  @Output() deleteDepartmentEvent = new EventEmitter<DepartmentModel>();
   displayedColumns: string[] = ['departmentID', 'departmentName', 'actions'];
-  readonly dialog = inject(MatDialog);
 
 
   /**
    * 
    */
-  constructor(private appService: AppServiceService, private readonly snackBar: MatSnackBar) { }
+  constructor(
+    private adminSysService: AdminSysService,
+    public pageState: PageState,
+    private readonly snackBar: MatSnackBar,
+    private readonly dialog: MatDialog
+  ) { }
 
 
   /**
    * 
    * @param department 
    */
-  onEditDepartment(department: DepartmentModel) {
+  public onEditDepartment(department: DepartmentModel) {
     const dialogRef: MatDialogRef<DepartmentDialogComponent, IDialogDepartmentResult>
       = this.dialog.open<DepartmentDialogComponent, IDialogDepartmentData, IDialogDepartmentResult>(DepartmentDialogComponent, {
         data: {
@@ -51,9 +56,9 @@ export class DepartmentListComponent {
     dialogRef.afterClosed().subscribe(resultDialog => {
       if (resultDialog == undefined) return
 
-      this.editDepartmentEvent.emit({
-        departmentID: resultDialog.result.departmentID,
-        departmentName: resultDialog.result.departmentName,
+      this.adminSysService.updateDepartment(resultDialog.result).subscribe({
+        next: resultModel => this.pageState.updateDepartment(resultModel),
+        error: (error) => this.showError(error),
       });
     });
   }
@@ -62,7 +67,7 @@ export class DepartmentListComponent {
    * 
    * @param department 
    */
-  onDeleteDepartment(department: DepartmentModel) {
+  public onDeleteDepartment(department: DepartmentModel) {
     const dialogRef = this.dialog.open<DialogConfirmComponent, IDialogConfirmData, IDialogConfirmResult>(DialogConfirmComponent, {
       data: {
         dialogTitle: 'Удалить запись',
@@ -73,21 +78,35 @@ export class DepartmentListComponent {
     });
 
     dialogRef.afterClosed().subscribe(resultDialog => {
-      if (resultDialog?.result == 'yes' && department.departmentID != undefined) {
+      if (resultDialog?.result == 'yes') {
+        if (department.departmentID == undefined) throw new Error('departmentID is undefined');
 
-        this.appService.deleteDepartment(department.departmentID).subscribe({
-          next: () => this.deleteDepartmentEvent.emit(department),
-          error: (error) => {
-            if (error instanceof HttpErrorResponse)
-              this.snackBar.open(error.message, 'Ok', {
-                duration: 3000,
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                panelClass: ['snackbar-error'],
-              });
-          }
+        this.adminSysService.deleteDepartment(department.departmentID).subscribe({
+          next: () => this.pageState.deleteDepartment(department),
+          error: (error) => this.showError(error),
         });
       }
+    });
+  }
+
+
+  /**
+   * Show error
+   * 
+   * @param error 
+   */
+  private showError(error: any) {
+    let errMessage: string | undefined = undefined;
+    if (error instanceof HttpErrorResponse)
+      errMessage = error.message;
+    else
+      errMessage = error;
+
+    this.snackBar.open(errMessage?.toString() ?? 'unknown error', 'Ok', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-error'],
     });
   }
 

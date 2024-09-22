@@ -1,14 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
-// @import "@angular/material/prebuilt-themes/cyan-orange.css";
-// @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+// @import "@angular/material/prebuilt-themes/indigo-pink.css";
+@import "@angular/material/prebuilt-themes/cyan-orange.css";
+// @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+html, body, app-root, .app-frame {
+  // overflow: hidden;
+  margin: 0;
+  // height: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  color: #e0e0e0;
+}
+
 .tab-item {
   padding: 5px;
+}
+
+.btn {
+  margin: 2px;
+}
+
+mat-expansion-panel {
+  mat-expansion-panel-header {
+    height: auto!important;
+    min-height: 60px;
+  }
+
+  mat-panel-description {
+    overflow: auto;
+  }
 }
 
 .snackbar-error {
@@ -22,4 +46,28 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
       background-color: brown !important;
     }
   }
+}
+
+@keyframes animation-loading-state {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+  100% { content: ''; }
+}
+
+.loading-state-message-isloading {
+  color: rgb(85, 65, 22);
+  text-align: center;
+}
+
+.loading-state-message-isloading::after {
+  display: inline-block;
+  animation: animation-loading-state steps(1,end) 1s infinite;
+  content: '';
+}
+
+.loading-state-message-error {
+  color: red;
+  text-align: center;
 }

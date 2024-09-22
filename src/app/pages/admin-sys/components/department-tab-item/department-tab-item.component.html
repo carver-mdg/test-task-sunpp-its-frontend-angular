@@ -1,11 +1,18 @@
 <div class="tab-item">
-  <button mat-raised-button color="primary" extended aria-label="Add new department"
-    (click)="openDialogCreateDepartment()">
+  <button mat-raised-button color="primary" extended class="btn" (click)="openDialogCreateDepartment()">
     Добавить новый цех
     <mat-icon>add</mat-icon>
   </button>
-  <br />
 
-  <app-department-list [departments]="departments" (editDepartmentEvent)="onEditDepartment($event)"
-    (deleteDepartmentEvent)="onDeleteDepartment($event)" />
+  <button mat-raised-button extended class="btn btn-emulate-load-error" (click)="onEmulateLoadError()">
+    emulate load error
+    <mat-icon>warning</mat-icon>
+  </button>
+
+  <button mat-raised-button extended class="btn btn-emulate-load-slow" (click)="onEmulateLoadSlow()">
+    emulate load slow
+    <mat-icon>speed</mat-icon>
+  </button>
+
+  <app-department-list />
 </div>

@@ -1,8 +1,6 @@
-<mat-tab-group dynamicHeight>
+<mat-tab-group >
   <mat-tab label="Цеха">
-    <app-department-tab-item [departments]="departments()" (createDepartmentEvent)="onCreateDepartmentEvent($event)"
-      (updateDepartmentEvent)="onUpdateDepartmentEvent($event)"
-      (deleteDepartmentEvent)="onDeleteDepartmentEvent($event)" />
+    <app-department-tab-item />
   </mat-tab>
   <mat-tab label="Штатные единицы">
     <app-staff-unit-tab-item />

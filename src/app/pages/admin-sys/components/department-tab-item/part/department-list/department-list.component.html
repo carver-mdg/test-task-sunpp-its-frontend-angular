@@ -1,8 +1,34 @@
-@if(!departments.length) {
-  <h1 align="center"> Данные отсутствуют :( </h1>
+@if(pageState.loadingState().departments.isLoading) {
+<h1 class="loading-state-message-isloading">
+  <mat-spinner style="margin: 0 auto;" />
+  Загрузка данных
+</h1>
 }
-@else {
-<table mat-table [dataSource]="departments" class="mat-elevation-z8">
+@if(pageState.loadingState().departments.isLoadingError) {
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
+      <mat-panel-title style="color: red">
+        <i class="material-icons">warning</i>
+        Ошибка загрузки данных
+      </mat-panel-title>
+      <mat-panel-description> Подробнее об ошибке </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-panel-description>
+      <pre [innerHTML]="pageState.loadingState().departments.loadingErrorData | json"></pre>
+    </mat-panel-description>
+  </mat-expansion-panel>
+</mat-accordion>
+}
+@if(
+!pageState.loadingState().departments.isLoading &&
+!pageState.loadingState().departments.isLoadingError
+) {
+@if(!pageState.departments().length) {
+<h1 align="center"> Данные отсутствуют :( </h1>
+}
+@else if(pageState.departments().length) {
+<table mat-table [dataSource]="pageState.departments()" class="mat-elevation-z8">
   <ng-container matColumnDef="departmentID">
     <th mat-header-cell *matHeaderCellDef> ID </th>
     <td mat-cell *matCellDef="let department"> {{department.departmentID}} </td>
@@ -30,4 +56,5 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+}
 }

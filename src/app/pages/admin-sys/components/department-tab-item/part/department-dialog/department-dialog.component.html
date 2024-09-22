@@ -7,7 +7,6 @@
 <mat-dialog-content>
   <mat-form-field class="field-input">
     <mat-label>Название цеха</mat-label>
-    <!-- <input matInput [(ngModel)]="department().departmentName" required /> -->
     <input matInput [(ngModel)]="department().department.departmentName" required />
     @if (department().department.departmentName) {
     <button matSuffix mat-icon-button aria-label="Clear" (click)="department().department.departmentName=''">

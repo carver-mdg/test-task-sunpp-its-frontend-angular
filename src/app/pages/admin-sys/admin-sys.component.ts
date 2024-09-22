@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, ViewChild } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
-import { AppServiceService } from './services/app.service.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
 import { DepartmentTabItemComponent } from './components/department-tab-item/department-tab-item.component';
 import { StaffUnitTabItemComponent } from './components/staff-unit-tab-item/staff-unit-tab-item.component';
-import { DepartmentModel } from 'app/models';
+import { PageState, StateLoadingItem } from './PageState';
+import { AdminSysService } from './services/admin-sys.service';
 
 @Component({
   selector: 'app-admin-sys',
@@ -19,49 +19,30 @@ import { DepartmentModel } from 'app/models';
   styleUrl: './admin-sys.component.scss'
 })
 export class AdminSysComponent implements OnInit {
-  departments = signal<DepartmentModel[]>([]);
-
   /**
    * 
-   * @param appService 
+   * @param adminSysService 
+   * @param pageState state of page
    */
-  constructor(private appService: AppServiceService) { }
+  constructor(private adminSysService: AdminSysService, private pageState: PageState) { }
 
   /**
-   * 
+   * Lifecycle hook that is called after Angular has initialized
    */
   ngOnInit() {
-    this.appService.loadDepartments().subscribe(data => this.departments.set(data));
+    this.loadDeparatments();
   }
 
   /**
-   * 
+   * Load departments with service
    */
-  onCreateDepartmentEvent(department: DepartmentModel) {
-    this.departments.set([...this.departments(), department]);
-  }
+  private loadDeparatments() {
+    this.pageState.loadingState.set({ departments: StateLoadingItem.loading() });
 
-  /**
- * 
- */
-  onUpdateDepartmentEvent(department: DepartmentModel) {
-    this.departments.set([...this.departments().map(item => {
-      if (item.departmentID == department.departmentID) {
-        return {
-          departmentID: department.departmentID,
-          departmentName: department.departmentName
-        }
-      }
-      return item;
-    })]);
-  }
-
-  /**
-   * 
-   */
-  onDeleteDepartmentEvent(department: DepartmentModel) {
-    this.departments.set([...this.departments().filter(item =>
-      item.departmentID != department.departmentID
-    )]);
+    this.adminSysService.loadDepartments().subscribe({
+      next: departments => this.pageState.createDepartments(departments),
+      error: (err) => this.pageState.loadingState.set({ departments: StateLoadingItem.error(err) }),
+      complete: () => this.pageState.loadingState.set({ departments: StateLoadingItem.complete() })
+    });
   }
 }
