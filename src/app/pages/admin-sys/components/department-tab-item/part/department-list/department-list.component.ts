@@ -12,7 +12,7 @@ import { IDialogConfirmData, IDialogConfirmResult } from 'app/components/dialog-
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IDialogDepartmentData, IDialogDepartmentResult } from '../department-dialog/types';
-import { AdminSysService } from 'app/pages/admin-sys/services/admin-sys.service';
+import { DepartmentService } from 'app/pages/admin-sys/services/department.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PageState } from 'app/pages/admin-sys/PageState';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -33,7 +33,7 @@ export class DepartmentListComponent {
    * 
    */
   constructor(
-    private adminSysService: AdminSysService,
+    private departmentService: DepartmentService,
     public pageState: PageState,
     private readonly snackBar: MatSnackBar,
     private readonly dialog: MatDialog
@@ -56,7 +56,7 @@ export class DepartmentListComponent {
     dialogRef.afterClosed().subscribe(resultDialog => {
       if (resultDialog == undefined) return
 
-      this.adminSysService.updateDepartment(resultDialog.result).subscribe({
+      this.departmentService.updateDepartment(resultDialog.result).subscribe({
         next: resultModel => this.pageState.updateDepartment(resultModel),
         error: (error) => this.showError(error),
       });
@@ -71,7 +71,7 @@ export class DepartmentListComponent {
     const dialogRef = this.dialog.open<DialogConfirmComponent, IDialogConfirmData, IDialogConfirmResult>(DialogConfirmComponent, {
       data: {
         dialogTitle: 'Удалить запись',
-        dialogContent: 'Вы хотите удалить запись ?',
+        dialogContent: `Вы хотите удалить - "${department.departmentName}" ?`,
         dialogBtnYesTitle: 'Удалить',
         dialogBtnNoTitle: 'Отмена'
       },
@@ -81,7 +81,7 @@ export class DepartmentListComponent {
       if (resultDialog?.result == 'yes') {
         if (department.departmentID == undefined) throw new Error('departmentID is undefined');
 
-        this.adminSysService.deleteDepartment(department.departmentID).subscribe({
+        this.departmentService.deleteDepartment(department.departmentID).subscribe({
           next: () => this.pageState.deleteDepartment(department),
           error: (error) => this.showError(error),
         });

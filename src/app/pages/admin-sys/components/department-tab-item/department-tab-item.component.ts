@@ -12,7 +12,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DepartmentDialogComponent } from './part/department-dialog/department-dialog.component';
 import { IDialogDepartmentData } from './part/department-dialog/types/IDialogDepartmentData';
 import { PageState, StateLoadingItem } from '../../PageState';
-import { AdminSysService } from '../../services/admin-sys.service';
+import { DepartmentService } from '../../services/department.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IDialogDepartmentResult } from './part/department-dialog/types';
@@ -35,7 +35,7 @@ export class DepartmentTabItemComponent {
    * 
    */
   constructor(
-    private adminSysService: AdminSysService,
+    private departmentService: DepartmentService,
     private pageState: PageState,
     private readonly snackBar: MatSnackBar,
     private readonly dialog: MatDialog,
@@ -58,7 +58,7 @@ export class DepartmentTabItemComponent {
     dialogRef.afterClosed().subscribe(resultDialog => {
       if (resultDialog == undefined) return;
 
-      this.adminSysService.saveDepartment(resultDialog.result).subscribe({
+      this.departmentService.saveDepartment(resultDialog.result).subscribe({
         next: resultModel => this.pageState.addDepartment(resultModel),
         error: (error) => this.showError(error),
       });
@@ -91,7 +91,7 @@ export class DepartmentTabItemComponent {
   public onEmulateLoadError() {
     this.pageState.loadingState.set({ departments: StateLoadingItem.loading() });
 
-    this.adminSysService.emulateLoadError().subscribe({
+    this.departmentService.emulateLoadError().subscribe({
       next: () => this.pageState.createDepartments([]),
       error: (err) => this.pageState.loadingState.set({ departments: StateLoadingItem.error(err) }),
       complete: () => this.pageState.loadingState.set({ departments: StateLoadingItem.complete() })
@@ -104,7 +104,7 @@ export class DepartmentTabItemComponent {
   public onEmulateLoadSlow() {
     this.pageState.loadingState.set({ departments: StateLoadingItem.loading() });
 
-    this.adminSysService.emulateLoadSlow().subscribe({
+    this.departmentService.emulateLoadSlow().subscribe({
       next: departments => this.pageState.createDepartments(departments),
       error: (err) => this.pageState.loadingState.set({ departments: StateLoadingItem.error(err) }),
       complete: () => this.pageState.loadingState.set({ departments: StateLoadingItem.complete() })

@@ -8,7 +8,7 @@ import { CreateDepartmentRequestDTO, DepartmentResponseDTO, UpdateDepartmentRequ
 @Injectable({
   providedIn: 'root'
 })
-export class AdminSysService {
+export class DepartmentService {
   /**
    * 
    * @param http Angular http

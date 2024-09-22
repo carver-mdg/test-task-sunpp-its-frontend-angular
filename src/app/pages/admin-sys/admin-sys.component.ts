@@ -5,7 +5,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { DepartmentTabItemComponent } from './components/department-tab-item/department-tab-item.component';
 import { StaffUnitTabItemComponent } from './components/staff-unit-tab-item/staff-unit-tab-item.component';
 import { PageState, StateLoadingItem } from './PageState';
-import { AdminSysService } from './services/admin-sys.service';
+import { DepartmentService } from './services/department.service';
 
 @Component({
   selector: 'app-admin-sys',
@@ -21,10 +21,10 @@ import { AdminSysService } from './services/admin-sys.service';
 export class AdminSysComponent implements OnInit {
   /**
    * 
-   * @param adminSysService 
+   * @param departmentService 
    * @param pageState state of page
    */
-  constructor(private adminSysService: AdminSysService, private pageState: PageState) { }
+  constructor(private departmentService: DepartmentService, private pageState: PageState) { }
 
   /**
    * Lifecycle hook that is called after Angular has initialized
@@ -39,7 +39,7 @@ export class AdminSysComponent implements OnInit {
   private loadDeparatments() {
     this.pageState.loadingState.set({ departments: StateLoadingItem.loading() });
 
-    this.adminSysService.loadDepartments().subscribe({
+    this.departmentService.loadDepartments().subscribe({
       next: departments => this.pageState.createDepartments(departments),
       error: (err) => this.pageState.loadingState.set({ departments: StateLoadingItem.error(err) }),
       complete: () => this.pageState.loadingState.set({ departments: StateLoadingItem.complete() })
