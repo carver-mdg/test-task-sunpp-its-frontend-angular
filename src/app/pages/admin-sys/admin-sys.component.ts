@@ -4,8 +4,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DepartmentTabItemComponent } from './components/department-tab-item/department-tab-item.component';
 import { StaffUnitTabItemComponent } from './components/staff-unit-tab-item/staff-unit-tab-item.component';
-import { PageState, StateLoadingItem } from './PageState';
+import { PageState } from './state/PageState';
 import { DepartmentService } from './services/department.service';
+import { StaffUnitService } from './services/staff-unit.service';
+import { StateLoadingItem } from './state/types';
 
 @Component({
   selector: 'app-admin-sys',
@@ -24,25 +26,45 @@ export class AdminSysComponent implements OnInit {
    * @param departmentService 
    * @param pageState state of page
    */
-  constructor(private departmentService: DepartmentService, private pageState: PageState) { }
+  constructor(
+    private departmentService: DepartmentService,
+    private staffUnitService: StaffUnitService,
+    private pageState: PageState) { }
+
 
   /**
    * Lifecycle hook that is called after Angular has initialized
    */
   ngOnInit() {
     this.loadDeparatments();
+    this.loadStaffUnits();
   }
+
 
   /**
    * Load departments with service
    */
   private loadDeparatments() {
-    this.pageState.loadingState.set({ departments: StateLoadingItem.loading() });
+    this.pageState.departments.loadingState.set(StateLoadingItem.loading());
 
     this.departmentService.loadDepartments().subscribe({
-      next: departments => this.pageState.createDepartments(departments),
-      error: (err) => this.pageState.loadingState.set({ departments: StateLoadingItem.error(err) }),
-      complete: () => this.pageState.loadingState.set({ departments: StateLoadingItem.complete() })
+      next: departments => this.pageState.departments.create(departments),
+      error: (err) => this.pageState.departments.loadingState.set(StateLoadingItem.error(err)),
+      complete: () => this.pageState.departments.loadingState.set(StateLoadingItem.complete())
+    });
+  }
+
+
+  /**
+   * Load staff units with service
+  */
+  private loadStaffUnits() {
+    this.pageState.staffUnits.loadingState.set(StateLoadingItem.loading());
+
+    this.staffUnitService.loadList().subscribe({
+      next: staffUnits => this.pageState.staffUnits.create(staffUnits),
+      error: (err) => this.pageState.staffUnits.loadingState.set(StateLoadingItem.error(err)),
+      complete: () => this.pageState.staffUnits.loadingState.set(StateLoadingItem.complete())
     });
   }
 }

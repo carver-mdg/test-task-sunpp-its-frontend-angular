@@ -14,7 +14,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { IDialogDepartmentData, IDialogDepartmentResult } from '../department-dialog/types';
 import { DepartmentService } from 'app/pages/admin-sys/services/department.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { PageState } from 'app/pages/admin-sys/PageState';
+import { PageState } from 'app/pages/admin-sys/state/PageState';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
@@ -57,7 +57,7 @@ export class DepartmentListComponent {
       if (resultDialog == undefined) return
 
       this.departmentService.updateDepartment(resultDialog.result).subscribe({
-        next: resultModel => this.pageState.updateDepartment(resultModel),
+        next: resultModel => this.pageState.departments.update(resultModel),
         error: (error) => this.showError(error),
       });
     });
@@ -82,7 +82,7 @@ export class DepartmentListComponent {
         if (department.departmentID == undefined) throw new Error('departmentID is undefined');
 
         this.departmentService.deleteDepartment(department.departmentID).subscribe({
-          next: () => this.pageState.deleteDepartment(department),
+          next: () => this.pageState.departments.delete(department),
           error: (error) => this.showError(error),
         });
       }

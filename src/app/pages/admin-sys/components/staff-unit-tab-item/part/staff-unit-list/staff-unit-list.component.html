@@ -1,0 +1,65 @@
+@if(pageState.staffUnits.loadingState().isLoading) {
+  <h1 class="loading-state-message-isloading">
+    <mat-spinner style="margin: 0 auto;" />
+    Загрузка данных
+  </h1>
+  }
+  @if(pageState.staffUnits.loadingState().isLoadingError) {
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
+        <mat-panel-title style="color: red">
+          <i class="material-icons">warning</i>
+          Ошибка загрузки данных
+        </mat-panel-title>
+        <mat-panel-description> Подробнее об ошибке </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-panel-description>
+        <pre [innerHTML]="pageState.staffUnits.loadingState().loadingErrorData | json"></pre>
+      </mat-panel-description>
+    </mat-expansion-panel>
+  </mat-accordion>
+  }
+  @if(
+  !pageState.staffUnits.loadingState().isLoading &&
+  !pageState.staffUnits.loadingState().isLoadingError
+  ) {
+  @if(!pageState.staffUnits.data().length) {
+  <h1 align="center"> Данные отсутствуют :( </h1>
+  }
+  @else if(pageState.staffUnits.data().length) {
+  <table mat-table [dataSource]="pageState.staffUnits.data()" class="mat-elevation-z8">
+    <ng-container matColumnDef="staffUnitID">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let staffUnit"> {{staffUnit.staffUnitID}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="staffUnitName">
+      <th mat-header-cell *matHeaderCellDef> Название </th>
+      <td mat-cell *matCellDef="let staffUnit"> {{staffUnit.staffUnitName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="departmentID">
+      <th mat-header-cell *matHeaderCellDef> Цех </th>
+      <td mat-cell *matCellDef="let staffUnit"> {{getDepartmentByID(staffUnit.departmentID)}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Действия </th>
+      <td mat-cell *matCellDef="let staffUnit">
+        <button mat-raised-button color="primary" class="button btn-small"
+          (click)="onEditStaffUnit(staffUnit)">
+          <i class="material-icons">edit</i>
+        </button>
+        <button mat-raised-button color="primary" class="button btn-small btn-delete"
+          (click)="onDeleteStaffUnit(staffUnit)">
+          <i class="material-icons">delete</i>
+        </button>
+      </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  }
+  }

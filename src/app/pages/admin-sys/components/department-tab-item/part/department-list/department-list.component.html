@@ -1,10 +1,10 @@
-@if(pageState.loadingState().departments.isLoading) {
+@if(pageState.departments.loadingState().isLoading) {
 <h1 class="loading-state-message-isloading">
   <mat-spinner style="margin: 0 auto;" />
   Загрузка данных
 </h1>
 }
-@if(pageState.loadingState().departments.isLoadingError) {
+@if(pageState.departments.loadingState().isLoadingError) {
 <mat-accordion>
   <mat-expansion-panel>
     <mat-expansion-panel-header collapsedHeight="*" expandedHeight="*">
@@ -15,20 +15,20 @@
       <mat-panel-description> Подробнее об ошибке </mat-panel-description>
     </mat-expansion-panel-header>
     <mat-panel-description>
-      <pre [innerHTML]="pageState.loadingState().departments.loadingErrorData | json"></pre>
+      <pre [innerHTML]="pageState.departments.loadingState().loadingErrorData | json"></pre>
     </mat-panel-description>
   </mat-expansion-panel>
 </mat-accordion>
 }
 @if(
-!pageState.loadingState().departments.isLoading &&
-!pageState.loadingState().departments.isLoadingError
+!pageState.departments.loadingState().isLoading &&
+!pageState.departments.loadingState().isLoadingError
 ) {
-@if(!pageState.departments().length) {
+@if(!pageState.departments.data().length) {
 <h1 align="center"> Данные отсутствуют :( </h1>
 }
-@else if(pageState.departments().length) {
-<table mat-table [dataSource]="pageState.departments()" class="mat-elevation-z8">
+@else if(pageState.departments.data().length) {
+<table mat-table [dataSource]="pageState.departments.data()" class="mat-elevation-z8">
   <ng-container matColumnDef="departmentID">
     <th mat-header-cell *matHeaderCellDef> ID </th>
     <td mat-cell *matCellDef="let department"> {{department.departmentID}} </td>
