@@ -7,14 +7,15 @@
 <mat-dialog-content>
   <mat-form-field class="field-input">
     <mat-label>Название штатной единицы</mat-label>
-    <input matInput [(ngModel)]="staffUnit().staffUnit.staffUnitName" required />
+    <input matInput [formControl]="formControlStaffUnit" required />
 
-    @if (staffUnit().staffUnit.staffUnitName) {
-    <button matSuffix mat-icon-button aria-label="Clear" (click)="staffUnit().staffUnit.staffUnitName=''">
+    @if (formControlStaffUnit.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlStaffUnit.setValue('')">
       <mat-icon>close</mat-icon>
     </button>
     }
-    @if(dialogErrors.isErrgAtFieldName()) {<mat-error>{{dialogErrors.errMsgAtFieldName()}}</mat-error>}
+
+    @if(!formControlStaffUnit.valid){ <mat-error>{{fieldsErrorMessages.staffUnitName()}}</mat-error> }
   </mat-form-field>
 
   <mat-form-field class="field-input">
@@ -33,7 +34,7 @@
       }
     </mat-autocomplete>
 
-    @if(!formControlDepartment.valid){ <mat-error>{{dialogErrors.errMsgAtFieldDepartment()}}</mat-error>}
+    @if(!formControlDepartment.valid){ <mat-error>{{fieldsErrorMessages.departmentName()}}</mat-error>}
   </mat-form-field>
 </mat-dialog-content>
 <mat-divider />

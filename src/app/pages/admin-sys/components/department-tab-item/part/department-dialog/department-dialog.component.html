@@ -7,15 +7,15 @@
 <mat-dialog-content>
   <mat-form-field class="field-input">
     <mat-label>Название цеха</mat-label>
-    <input matInput [(ngModel)]="department().department.departmentName" required />
-    @if (department().department.departmentName) {
-    <button matSuffix mat-icon-button aria-label="Clear" (click)="department().department.departmentName=''">
+    <input matInput [formControl]="formControlDepartmentName" required />
+
+    @if (formControlDepartmentName.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlDepartmentName.setValue('')">
       <mat-icon>close</mat-icon>
     </button>
     }
-    @if(dialogCheckingFieldResult.isErrgAtFieldName()) {
-    <mat-error>{{dialogCheckingFieldResult.errMsgAtFieldName()}}</mat-error>
-    }
+
+    @if(!formControlDepartmentName.valid){ <mat-error>{{fieldsErrorMessages.departmentName()}}</mat-error> }
   </mat-form-field>
 </mat-dialog-content>
 <mat-divider />

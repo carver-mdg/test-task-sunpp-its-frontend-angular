@@ -1,5 +1,5 @@
-import { Component, inject, model, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, inject, model, OnInit, signal } from '@angular/core';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
@@ -16,6 +16,7 @@ import { IDialogDepartmentData, IDialogDepartmentResult } from './types';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
+    ReactiveFormsModule,
     MatButtonModule,
     MatDialogModule,
     MatDividerModule,
@@ -24,28 +25,43 @@ import { IDialogDepartmentData, IDialogDepartmentResult } from './types';
   templateUrl: './department-dialog.component.html',
   styleUrl: './department-dialog.component.scss'
 })
-export class DepartmentDialogComponent {
+export class DepartmentDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<DepartmentDialogComponent, DepartmentModel>);
   readonly data = inject<IDialogDepartmentData>(MAT_DIALOG_DATA);
   readonly department = model(this.data);
   dialogResult?: IDialogDepartmentResult = undefined;
 
-  dialogCheckingFieldResult = {
-    isErrgAtFieldName: signal(false),
-    errMsgAtFieldName: signal(''),
+  // form fields
+  formControlDepartmentName = new FormControl<string | undefined>(undefined);
+
+  // if errors are made when filling in the fields, these messages will be displayed
+  fieldsErrorMessages = {
+    departmentName: signal<string>(''),
   };
 
 
+  /**
+ * Component has been initialized
+ */
+  ngOnInit() {
+    // Set init value to field departmentName
+    this.formControlDepartmentName.setValue(this.department().department.departmentName);
+  }
+
+  
   /**
    * Clicked button 'Ok' in dialog.
    */
   onClickOk(): void {
     if (this.validateFieldsAtDialog()) return;
 
+    let departmentName = this.formControlDepartmentName.value;
+    if(departmentName == undefined || departmentName == '') return;
+
     this.dialogResult = {
       result: {
         departmentID: this.department().department.departmentID,
-        departmentName: this.department().department?.departmentName
+        departmentName: departmentName
       }
     };
     this.dialogRef.close(this.dialogResult);
@@ -68,13 +84,21 @@ export class DepartmentDialogComponent {
   validateFieldsAtDialog(): boolean {
     let isValidationHasError = false;
 
-    if (this.department().department?.departmentName == '' ||
-      this.department().department?.departmentName == undefined
+    let fieldNameErrors: string[] = [];
+
+    // field: departmentName
+    if (this.formControlDepartmentName.value == undefined ||
+      this.formControlDepartmentName.value == ''
     ) {
-      this.dialogCheckingFieldResult.isErrgAtFieldName.set(true);
-      this.dialogCheckingFieldResult.errMsgAtFieldName.set('Поле не может быть пустым');
+      this.formControlDepartmentName.markAsDirty();
+      this.formControlDepartmentName.markAsTouched();
+      this.formControlDepartmentName.updateValueAndValidity();
+
+      fieldNameErrors.push('Поле не может быть пустым');
       isValidationHasError = true;
     }
+
+    this.fieldsErrorMessages.departmentName.set(fieldNameErrors.join(', '));
 
     return isValidationHasError;
   }

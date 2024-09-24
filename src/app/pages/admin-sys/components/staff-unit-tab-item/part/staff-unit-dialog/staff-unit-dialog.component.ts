@@ -37,17 +37,19 @@ export class StaffUnitDialogComponent implements OnInit {
   readonly data = inject<IDialogStaffUnitData>(MAT_DIALOG_DATA);
   readonly staffUnit = model(this.data);
 
-  formControlDepartment = new FormControl<DepartmentModel | undefined>(undefined);
   departments = inject(DepartmentsState);
   filteredOptionsOfDepartments?: Observable<DepartmentModel[]>;
 
   dialogResult?: IDialogStaffUnitResult = undefined;
 
-  dialogErrors = {
-    isErrgAtFieldName: signal(false),
-    errMsgAtFieldName:  signal<string[]>([]),
+  // form fields
+  formControlStaffUnit = new FormControl<string | undefined>(undefined);
+  formControlDepartment = new FormControl<DepartmentModel | undefined>(undefined);
 
-    errMsgAtFieldDepartment: signal<string[]>([]),
+  // if errors are made when filling in the fields, these messages will be displayed
+  fieldsErrorMessages = {
+    staffUnitName: signal<string>(''),
+    departmentName: signal<string>(''),
   };
 
 
@@ -63,7 +65,10 @@ export class StaffUnitDialogComponent implements OnInit {
       }),
     );
 
-    // Set init value to field department from model of staff unit
+    // Set init value to field staffUnitName
+    this.formControlStaffUnit.setValue(this.staffUnit().staffUnit.staffUnitName);
+
+    // Set init value to field department
     this.formControlDepartment.setValue(
       this.departments.data().find(
         item => item.departmentID == this.staffUnit().staffUnit.departmentID
@@ -105,7 +110,7 @@ export class StaffUnitDialogComponent implements OnInit {
     this.dialogResult = {
       result: {
         staffUnitID: this.staffUnit().staffUnit.staffUnitID,
-        staffUnitName: this.staffUnit().staffUnit.staffUnitName,
+        staffUnitName: this.formControlStaffUnit.value ?? '',
         departmentID: this.formControlDepartment.value?.departmentID,
       }
     };
@@ -132,17 +137,19 @@ export class StaffUnitDialogComponent implements OnInit {
     let fieldNameErrors: string[] = [];
     let fieldDepartmentErrors: string[] = [];
 
-    // field: name of staff unit
-    if (this.staffUnit().staffUnit?.staffUnitName == undefined ||
-      this.staffUnit().staffUnit?.staffUnitName == ''
+    // field: StaffUnitName
+    if (this.formControlStaffUnit.value == undefined ||
+      this.formControlStaffUnit.value == ''
     ) {
-      this.dialogErrors.isErrgAtFieldName.set(true);
-      // this.dialogErrors.errMsgAtFieldName.set('Поле не может быть пустым');
+      this.formControlStaffUnit.markAsDirty();
+      this.formControlStaffUnit.markAsTouched();
+      this.formControlStaffUnit.updateValueAndValidity();
+
       fieldNameErrors.push('Поле не может быть пустым');
       isValidationHasError = true;
     }
 
-    // field: department of staff unit
+    // field: department
     if (this.formControlDepartment.value == undefined ||
       this.formControlDepartment.value.departmentName == ''
     ) {
@@ -154,8 +161,8 @@ export class StaffUnitDialogComponent implements OnInit {
       isValidationHasError = true;
     }
 
-    this.dialogErrors.errMsgAtFieldName.set([...fieldNameErrors]);
-    this.dialogErrors.errMsgAtFieldDepartment.set([...fieldDepartmentErrors]);
+    this.fieldsErrorMessages.staffUnitName.set(fieldNameErrors.join(', '));
+    this.fieldsErrorMessages.departmentName.set(fieldDepartmentErrors.join(', '));
 
     return isValidationHasError;
   }

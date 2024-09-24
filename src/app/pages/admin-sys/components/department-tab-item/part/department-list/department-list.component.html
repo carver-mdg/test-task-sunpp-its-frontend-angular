@@ -4,6 +4,7 @@
   Загрузка данных
 </h1>
 }
+
 @if(pageState.departments.loadingState().isLoadingError) {
 <mat-accordion>
   <mat-expansion-panel>
@@ -15,19 +16,16 @@
       <mat-panel-description> Подробнее об ошибке </mat-panel-description>
     </mat-expansion-panel-header>
     <mat-panel-description>
-      <pre [innerHTML]="pageState.departments.loadingState().loadingErrorData | json"></pre>
+      <pre [innerHTML]="pageState.departments.loadingState().errorData | json"></pre>
     </mat-panel-description>
   </mat-expansion-panel>
 </mat-accordion>
 }
-@if(
-!pageState.departments.loadingState().isLoading &&
-!pageState.departments.loadingState().isLoadingError
-) {
-@if(!pageState.departments.data().length) {
+
+@if(pageState.departments.loadingState().isCompleted && !pageState.departments.data().length) {
 <h1 align="center"> Данные отсутствуют :( </h1>
 }
-@else if(pageState.departments.data().length) {
+@if(pageState.departments.loadingState().isCompleted) {
 <table mat-table [dataSource]="pageState.departments.data()" class="mat-elevation-z8">
   <ng-container matColumnDef="departmentID">
     <th mat-header-cell *matHeaderCellDef> ID </th>
@@ -56,5 +54,4 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
-}
 }
