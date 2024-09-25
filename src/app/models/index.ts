@@ -1,2 +1,2 @@
-export * from './departmentModel';
-export * from './staffUnitModel';
+export * from './DepartmentModel';
+export * from './StaffUnitModel';
