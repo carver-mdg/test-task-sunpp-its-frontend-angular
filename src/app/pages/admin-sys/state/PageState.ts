@@ -1,6 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { DepartmentsState } from "./items/departments";
-import { StaffUnitsState } from "./items/staff-units";
+import { DepartmentsState, StaffUnitsState, EmployeesState } from "./items";
 
 @Injectable({
   providedIn: 'root'
@@ -8,4 +7,5 @@ import { StaffUnitsState } from "./items/staff-units";
 export class PageState {
   departments = inject(DepartmentsState);
   staffUnits = inject(StaffUnitsState);
+  employees = inject(EmployeesState);
 }

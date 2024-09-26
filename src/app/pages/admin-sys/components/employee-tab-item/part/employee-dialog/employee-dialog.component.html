@@ -1,0 +1,45 @@
+<h3 mat-dialog-title>
+  @if(employee().dialogType == 'create') { Добавить работника }
+  @else if(employee().dialogType == 'update') { Обновить работника }
+</h3>
+<mat-divider />
+
+<mat-dialog-content>
+  <mat-form-field class="field-input">
+    <mat-label>Полное имя работника</mat-label>
+    <input matInput [formControl]="formControlEmployeeFullName" required />
+
+    @if (formControlEmployeeFullName.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlEmployeeFullName.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+
+    @if(!formControlEmployeeFullName.valid){ <mat-error>{{fieldsErrorMessages.employeeFullName()}}</mat-error> }
+  </mat-form-field>
+
+  <mat-form-field class="field-input">
+    <mat-label>Штатная единица</mat-label>
+    <input matInput [formControl]="formControlStaffUnit" [matAutocomplete]="auto" required>
+
+    @if (formControlStaffUnit.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlStaffUnit.setValue(undefined)">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnStaffUnit">
+      @for (option of filteredOptionsOfStaffUnits | async; track option) {
+      <mat-option [value]="option">{{option.staffUnitName}} / ({{getDepartmentNameByStaffUnit(option)}})</mat-option>
+      }
+    </mat-autocomplete>
+
+    @if(!formControlStaffUnit.valid){ <mat-error>{{fieldsErrorMessages.staffUnitName()}}</mat-error>}
+  </mat-form-field>
+</mat-dialog-content>
+<mat-divider />
+
+<mat-dialog-actions>
+  <button mat-button (click)="onClickOk()">Ok</button>
+  <button mat-button (click)="onClickCancel()"> Cancel </button>
+</mat-dialog-actions>

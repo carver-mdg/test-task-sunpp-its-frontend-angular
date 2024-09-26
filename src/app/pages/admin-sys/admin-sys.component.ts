@@ -4,17 +4,17 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DepartmentTabItemComponent } from './components/department-tab-item/department-tab-item.component';
 import { StaffUnitTabItemComponent } from './components/staff-unit-tab-item/staff-unit-tab-item.component';
+import { EmployeeTabItemComponent } from './components/employee-tab-item/employee-tab-item.component';
 import { PageState } from './state/PageState';
-import { DepartmentService } from './services/department.service';
-import { StaffUnitService } from './services/staff-unit.service';
 import { StateLoadingItem } from './state/types';
+import { DepartmentService, StaffUnitService, EmployeeService } from './services';
 
 @Component({
   selector: 'app-admin-sys',
   standalone: true,
   imports: [
     MatTabsModule, MatFormFieldModule, MatInputModule,
-    DepartmentTabItemComponent, StaffUnitTabItemComponent,
+    DepartmentTabItemComponent, StaffUnitTabItemComponent, EmployeeTabItemComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-sys.component.html',
@@ -29,6 +29,7 @@ export class AdminSysComponent implements OnInit {
   constructor(
     private departmentService: DepartmentService,
     private staffUnitService: StaffUnitService,
+    private employeeService: EmployeeService,
     private pageState: PageState) { }
 
 
@@ -38,6 +39,7 @@ export class AdminSysComponent implements OnInit {
   ngOnInit() {
     this.loadDeparatments();
     this.loadStaffUnits();
+    this.loadEmployees();
   }
 
 
@@ -65,6 +67,20 @@ export class AdminSysComponent implements OnInit {
       next: staffUnits => this.pageState.staffUnits.create(staffUnits),
       error: (err) => this.pageState.staffUnits.loadingState.set(StateLoadingItem.error(err)),
       complete: () => this.pageState.staffUnits.loadingState.set(StateLoadingItem.complete())
+    });
+  }
+
+
+  /**
+   * Load employees with service
+  */
+  private loadEmployees() {
+    this.pageState.employees.loadingState.set(StateLoadingItem.loading());
+
+    this.employeeService.loadList().subscribe({
+      next: employees => this.pageState.employees.create(employees),
+      error: (err) => this.pageState.employees.loadingState.set(StateLoadingItem.error(err)),
+      complete: () => this.pageState.employees.loadingState.set(StateLoadingItem.complete())
     });
   }
 }
