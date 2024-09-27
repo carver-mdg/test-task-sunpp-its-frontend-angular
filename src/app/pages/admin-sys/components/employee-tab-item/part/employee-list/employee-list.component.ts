@@ -1,6 +1,6 @@
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -11,7 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DialogConfirmComponent } from 'app/components/dialog-confirm/dialog-confirm.component';
 import { IDialogConfirmData, IDialogConfirmResult } from 'app/components/dialog-confirm/types';
-import { EmployeeModel, StaffUnitModel } from 'app/models';
+import { EmployeeModel } from 'app/models';
 import { EmployeeService } from 'app/pages/admin-sys/services/employee.service';
 import { PageState } from 'app/pages/admin-sys/state/PageState';
 import { EmployeeDialogComponent } from '../employee-dialog/employee-dialog.component';

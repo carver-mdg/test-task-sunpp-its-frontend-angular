@@ -9,11 +9,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { EmployeeModel, StaffUnitModel } from 'app/models';
-import { DepartmentsState } from 'app/pages/admin-sys/state/items/departments';
+import { PageState } from 'app/pages/admin-sys/state/PageState';
 import { map, Observable, startWith } from 'rxjs';
 import { IDialogEmployeeData, IDialogEmployeeResult } from './types';
-import { StaffUnitsState } from 'app/pages/admin-sys/state/items';
-import { PageState } from 'app/pages/admin-sys/state/PageState';
 
 @Component({
   selector: 'app-employee-dialog',
@@ -94,7 +92,7 @@ export class EmployeeDialogComponent implements OnInit {
    * This function is called when the value in the input form changes.
    * 
    * @param staffUnitName 
-   * @returns filtered department models by value in the input form by it department names
+   * @returns filtered staff units models by value in the input form by it staff unit names
    */
   private onFilterStaffUnits(staffUnitName: string): StaffUnitModel[] {
     const filterValue = staffUnitName.toLowerCase();
@@ -137,7 +135,7 @@ export class EmployeeDialogComponent implements OnInit {
     let isValidationHasError = false;
 
     let fieldNameErrors: string[] = [];
-    let fieldDepartmentErrors: string[] = [];
+    let fieldStaffUnitErrors: string[] = [];
 
     // field: employee full name
     if (this.formControlEmployeeFullName.value == undefined ||
@@ -159,12 +157,12 @@ export class EmployeeDialogComponent implements OnInit {
       this.formControlStaffUnit.markAsTouched();
       this.formControlStaffUnit.updateValueAndValidity();
 
-      fieldDepartmentErrors.push('Поле не может быть пустым');
+      fieldStaffUnitErrors.push('Поле не может быть пустым');
       isValidationHasError = true;
     }
 
     this.fieldsErrorMessages.employeeFullName.set(fieldNameErrors.join(', '));
-    this.fieldsErrorMessages.staffUnitName.set(fieldDepartmentErrors.join(', '));
+    this.fieldsErrorMessages.staffUnitName.set(fieldStaffUnitErrors.join(', '));
 
     return isValidationHasError;
   }
