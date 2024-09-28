@@ -1,0 +1,58 @@
+<h3 mat-dialog-title>
+  @if(user().dialogType == 'create') { Добавить пользователя }
+  @else if(user().dialogType == 'update') { Обновить пользователя }
+</h3>
+<mat-divider />
+
+<mat-dialog-content>
+  <mat-form-field class="field-input">
+    <mat-label>Логин пользователя</mat-label>
+    <input matInput [formControl]="formControlUserLogin" required />
+
+    @if (formControlUserLogin.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlUserLogin.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+
+    @if(!formControlUserLogin.valid){ <mat-error>{{fieldsErrorMessages.userLogin()}}</mat-error> }
+  </mat-form-field>
+
+  <mat-form-field class="field-input">
+    <mat-label>Пароль пользователя</mat-label>
+    <input matInput type="password" [formControl]="formControlUserPassword" required />
+
+    @if (formControlUserPassword.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlUserPassword.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+
+    @if(!formControlUserPassword.valid){ <mat-error>{{fieldsErrorMessages.userPassword()}}</mat-error> }
+  </mat-form-field>
+
+  <mat-form-field class="field-input">
+    <mat-label>Работник</mat-label>
+    <input matInput [formControl]="formControlEmployee" [matAutocomplete]="auto" required>
+
+    @if (formControlEmployee.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlEmployee.setValue(undefined)">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnEmployee">
+      @for (option of filteredOptionsOfEmployees | async; track option) {
+      <mat-option [value]="option">{{option.fullName}}</mat-option>
+      }
+    </mat-autocomplete>
+
+    @if(!formControlEmployee.valid){ <mat-error>{{fieldsErrorMessages.employeeName()}}</mat-error>}
+  </mat-form-field>
+</mat-dialog-content>
+<mat-divider />
+
+<mat-dialog-actions>
+  <button mat-button (click)="onClickOk()">Ok</button>
+  <button mat-button (click)="onClickCancel()"> Cancel </button>
+</mat-dialog-actions>
