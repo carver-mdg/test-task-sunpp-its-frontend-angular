@@ -3,21 +3,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DepartmentTabItemComponent } from './components/department-tab-item/department-tab-item.component';
-import { StaffUnitTabItemComponent } from './components/staff-unit-tab-item/staff-unit-tab-item.component';
 import { EmployeeTabItemComponent } from './components/employee-tab-item/employee-tab-item.component';
+import { StaffUnitTabItemComponent } from './components/staff-unit-tab-item/staff-unit-tab-item.component';
+import { UserTabItemComponent } from './components/user-tab-item/user-tab-item.component';
+import { DepartmentService, EmployeeService, StaffUnitService, UserService, AdminSysService } from './services';
 import { PageState } from './state/PageState';
 import { StateLoadingItem } from './state/types';
-import { DepartmentService, StaffUnitService, EmployeeService } from './services';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AdminSysService } from './services/admin-sys.service';
 
 @Component({
   selector: 'app-admin-sys',
   standalone: true,
   imports: [
     MatTabsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule,
-    DepartmentTabItemComponent, StaffUnitTabItemComponent, EmployeeTabItemComponent,
+    DepartmentTabItemComponent, StaffUnitTabItemComponent, EmployeeTabItemComponent, UserTabItemComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './admin-sys.component.html',
@@ -34,6 +34,7 @@ export class AdminSysComponent implements OnInit {
     private departmentService: DepartmentService,
     private staffUnitService: StaffUnitService,
     private employeeService: EmployeeService,
+    private userService: UserService,
     private pageState: PageState) { }
 
 
@@ -44,6 +45,7 @@ export class AdminSysComponent implements OnInit {
     this.loadDeparatments();
     this.loadStaffUnits();
     this.loadEmployees();
+    this.loadUsers();
   }
 
 
@@ -115,6 +117,20 @@ export class AdminSysComponent implements OnInit {
       next: employees => this.pageState.employees.create(employees),
       error: (err) => this.pageState.employees.loadingState.set(StateLoadingItem.error(err)),
       complete: () => this.pageState.employees.loadingState.set(StateLoadingItem.complete())
+    });
+  }
+
+
+  /**
+   * Load users with service
+  */
+  private loadUsers() {
+    this.pageState.users.loadingState.set(StateLoadingItem.loading());
+
+    this.userService.loadList().subscribe({
+      next: users => this.pageState.users.create(users),
+      error: (err) => this.pageState.users.loadingState.set(StateLoadingItem.error(err)),
+      complete: () => this.pageState.users.loadingState.set(StateLoadingItem.complete())
     });
   }
 }
