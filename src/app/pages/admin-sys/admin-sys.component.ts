@@ -8,12 +8,15 @@ import { EmployeeTabItemComponent } from './components/employee-tab-item/employe
 import { PageState } from './state/PageState';
 import { StateLoadingItem } from './state/types';
 import { DepartmentService, StaffUnitService, EmployeeService } from './services';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { AdminSysService } from './services/admin-sys.service';
 
 @Component({
   selector: 'app-admin-sys',
   standalone: true,
   imports: [
-    MatTabsModule, MatFormFieldModule, MatInputModule,
+    MatTabsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatIconModule,
     DepartmentTabItemComponent, StaffUnitTabItemComponent, EmployeeTabItemComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,6 +30,7 @@ export class AdminSysComponent implements OnInit {
    * @param pageState state of page
    */
   constructor(
+    private adminSysService: AdminSysService,
     private departmentService: DepartmentService,
     private staffUnitService: StaffUnitService,
     private employeeService: EmployeeService,
@@ -40,6 +44,36 @@ export class AdminSysComponent implements OnInit {
     this.loadDeparatments();
     this.loadStaffUnits();
     this.loadEmployees();
+  }
+
+
+  /**
+   * Click on button to fill database by mock data.
+   * 
+   * @NOTE To simplify the task, just reload the page, 
+   * in a real application it is better to generate 
+   * random data on the client and in case of a successful 
+   * server response update the state of the page
+   */
+  public onClickFillDbByMockData() {
+    this.adminSysService.fillDbByMockData().subscribe({
+      next: () => window.location.reload()
+    });
+  }
+
+
+  /**
+   * Click on button to truncate database
+   * 
+   * @NOTE To simplify the task, just reload the page, 
+   * in a real application it is better to generate 
+   * random data on the client and in case of a successful 
+   * server response update the state of the page
+   */
+  public onClickTruncateDb() {
+    this.adminSysService.truncateDb().subscribe({
+      next: () => window.location.reload()
+    });
   }
 
 

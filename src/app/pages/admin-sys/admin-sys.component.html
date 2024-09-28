@@ -1,3 +1,14 @@
+<div class="btn-database-container">
+<button mat-raised-button extended class="btn btn-database-fill-mock-data" (click)="onClickFillDbByMockData()">
+  Fill database by mock data
+  <mat-icon>dataset</mat-icon>
+</button>
+<button mat-raised-button extended class="btn btn-database-truncate" (click)="onClickTruncateDb()">
+  Clear database
+  <mat-icon>delete</mat-icon>
+</button>
+</div>
+
 <mat-tab-group >
   <mat-tab label="Цеха">
     <app-department-tab-item />
