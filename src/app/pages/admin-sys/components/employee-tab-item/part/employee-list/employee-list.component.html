@@ -39,7 +39,10 @@
 
   <ng-container matColumnDef="staffUnitID">
     <th mat-header-cell *matHeaderCellDef> Штатная единица </th>
-    <td mat-cell *matCellDef="let employee"> {{getStaffUnitByID(employee.staffUnitID)}} / ({{getDepartmentNameByStaffUnit(employee.staffUnitID)}})</td>
+    <td mat-cell *matCellDef="let employee">
+      {{getStaffUnitByID(employee.staffUnitID)}} <br />
+      <span class="text-muted">({{getDepartmentNameByStaffUnit(employee.staffUnitID)}})</span>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="actions">

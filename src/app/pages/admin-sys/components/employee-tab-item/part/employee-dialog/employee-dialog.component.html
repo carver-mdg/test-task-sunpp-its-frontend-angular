@@ -30,7 +30,12 @@
 
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnStaffUnit">
       @for (option of filteredOptionsOfStaffUnits | async; track option) {
-      <mat-option [value]="option">{{option.staffUnitName}} / ({{getDepartmentNameByStaffUnit(option)}})</mat-option>
+      <mat-option [value]="option">
+        <div class="select-option">
+          <div class="staffunit-name">{{option.staffUnitName}} </div>
+          <div class="department-name">{{getDepartmentNameByStaffUnit(option)}}</div>
+        </div>
+      </mat-option>
       }
     </mat-autocomplete>
 
