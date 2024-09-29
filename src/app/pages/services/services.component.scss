@@ -1,0 +1,33 @@
+.container-card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-card {
+  margin: 5px;
+}
+
+/* mobile */
+@media (min-width: 0) and (max-width: 425px) {
+  .item-card {
+    width: max-content;
+  }
+}
+
+/* other devices */
+@media (min-width: 425px) {
+  .item-card {
+    width: 250px;
+  }
+}
+
+
+.text-muted-item-card {
+  opacity: .5;
+  font-size: x-small;
+  font-weight: bolder;
+  font-style: italic;
+}
