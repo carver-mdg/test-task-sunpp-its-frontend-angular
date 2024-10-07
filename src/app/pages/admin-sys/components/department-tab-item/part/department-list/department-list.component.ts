@@ -49,7 +49,7 @@ export class DepartmentListComponent {
       = this.dialog.open<DepartmentDialogComponent, IDialogDepartmentData, IDialogDepartmentResult>(DepartmentDialogComponent, {
         data: {
           dialogType: 'update',
-          department: { departmentID: department.departmentID, departmentName: department.departmentName }
+          data: { departmentID: department.departmentID, departmentName: department.departmentName }
         },
       });
 

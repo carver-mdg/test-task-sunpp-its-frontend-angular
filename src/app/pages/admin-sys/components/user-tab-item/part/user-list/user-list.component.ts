@@ -49,7 +49,7 @@ export class UserListComponent {
       = this.dialog.open<UserDialogComponent, IDialogUserData, IDialogUserResult>(UserDialogComponent, {
         data: {
           dialogType: 'update',
-          user: { userID: user.userID, login: user.login, employeeID: user.employeeID }
+          data: { userID: user.userID, login: user.login, employeeID: user.employeeID }
         },
       });
 

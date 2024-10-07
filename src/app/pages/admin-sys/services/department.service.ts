@@ -22,7 +22,7 @@ export class DepartmentService {
    * 
    * @returns list of models of departments
    */
-  public loadDepartments(): Observable<DepartmentModel[]> {
+  public loadList(): Observable<DepartmentModel[]> {
     return this.http.get<DepartmentResponseDTO[]>(`${this.appSettings.baseUrlAPI}/api/v1/departments/`).
       pipe(map((departmentsDTO) => {
         let departments: DepartmentModel[] = [];
@@ -105,6 +105,6 @@ export class DepartmentService {
    * @returns list of models of departments
    */
   public emulateLoadSlow(): Observable<DepartmentModel[]> {
-    return this.loadDepartments().pipe(delay(3000));
+    return this.loadList().pipe(delay(3000));
   }
 }

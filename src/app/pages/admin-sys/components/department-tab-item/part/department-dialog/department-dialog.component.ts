@@ -28,7 +28,7 @@ import { IDialogDepartmentData, IDialogDepartmentResult } from './types';
 export class DepartmentDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<DepartmentDialogComponent, DepartmentModel>);
   readonly data = inject<IDialogDepartmentData>(MAT_DIALOG_DATA);
-  readonly department = model(this.data);
+  readonly modelDialogData = model(this.data);
   dialogResult?: IDialogDepartmentResult = undefined;
 
   // form fields
@@ -45,7 +45,7 @@ export class DepartmentDialogComponent implements OnInit {
  */
   ngOnInit() {
     // Set init value to field departmentName
-    this.formControlDepartmentName.setValue(this.department().department.departmentName);
+    this.formControlDepartmentName.setValue(this.modelDialogData().data.departmentName);
   }
 
   
@@ -60,7 +60,7 @@ export class DepartmentDialogComponent implements OnInit {
 
     this.dialogResult = {
       result: {
-        departmentID: this.department().department.departmentID,
+        departmentID: this.modelDialogData().data.departmentID,
         departmentName: departmentName
       }
     };
@@ -76,6 +76,7 @@ export class DepartmentDialogComponent implements OnInit {
   }
 
 
+  // @TODO It's better to rewrite through validators in form controls
   /**
    * Checking fields at dialog (e.g. field input must have value, ...)
    * 

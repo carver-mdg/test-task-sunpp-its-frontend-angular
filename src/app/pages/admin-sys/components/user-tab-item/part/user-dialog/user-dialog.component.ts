@@ -35,12 +35,11 @@ import { IDialogUserData, IDialogUserResult } from './types';
 export class UserDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<UserDialogComponent, UserModel>);
   readonly data = inject<IDialogUserData>(MAT_DIALOG_DATA);
-  readonly user = model(this.data);
+  readonly modelDialogData = model(this.data);
+  dialogResult?: IDialogUserResult = undefined;
 
   pageState = inject(PageState);
   filteredOptionsOfEmployees?: Observable<EmployeeModel[]>;
-
-  dialogResult?: IDialogUserResult = undefined;
 
   // form fields
   formControlUserLogin = new FormControl<string | undefined>(undefined);
@@ -68,12 +67,12 @@ export class UserDialogComponent implements OnInit {
     );
 
     // Set init value to field user.fullName
-    this.formControlUserLogin.setValue(this.user().user.login);
+    this.formControlUserLogin.setValue(this.modelDialogData().data.login);
 
     // Set init value to field employee
     this.formControlEmployee.setValue(
       this.pageState.employees.data().find(
-        item => item.employeeID == this.user().user.employeeID
+        item => item.employeeID == this.modelDialogData().data.employeeID
       )
     );
   }
@@ -111,7 +110,7 @@ export class UserDialogComponent implements OnInit {
 
     this.dialogResult = {
       result: {
-        userID: this.user().user.userID,
+        userID: this.modelDialogData().data.userID,
         login: this.formControlUserLogin.value ?? '',
         employeeID: this.formControlEmployee.value?.employeeID,
       }
@@ -128,6 +127,7 @@ export class UserDialogComponent implements OnInit {
   }
 
 
+  // @TODO It's better to rewrite through validators in form controls
   /**
    * Checking fields at dialog (e.g. field input must have value, ...)
    * 

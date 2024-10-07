@@ -81,13 +81,12 @@ export class AdminSysComponent implements OnInit {
   }
 
 
+  // @NOTE To simplify the task, just reload the page, 
+  //  in a real application it is better to generate 
+  //  random data on the client and in case of a successful 
+  //  server response update the state of the page
   /**
    * Click on button to fill database by mock data.
-   * 
-   * @NOTE To simplify the task, just reload the page, 
-   * in a real application it is better to generate 
-   * random data on the client and in case of a successful 
-   * server response update the state of the page
    */
   public onClickFillDbByMockData() {
     this.adminSysService.fillDbByMockData().subscribe({
@@ -96,13 +95,10 @@ export class AdminSysComponent implements OnInit {
   }
 
 
+  // @NOTE To simplify the task, just reload the page,
+  //  in case of a successful server response reload the page
   /**
    * Click on button to truncate database
-   * 
-   * @NOTE To simplify the task, just reload the page, 
-   * in a real application it is better to generate 
-   * random data on the client and in case of a successful 
-   * server response update the state of the page
    */
   public onClickTruncateDb() {
     this.adminSysService.truncateDb().subscribe({
@@ -117,7 +113,7 @@ export class AdminSysComponent implements OnInit {
   private loadDeparatments() {
     this.pageState.departments.loadingState.set(StateLoadingItem.loading());
 
-    this.departmentService.loadDepartments().subscribe({
+    this.departmentService.loadList().subscribe({
       next: departments => this.pageState.departments.create(departments),
       error: (err) => this.pageState.departments.loadingState.set(StateLoadingItem.error(err)),
       complete: () => this.pageState.departments.loadingState.set(StateLoadingItem.complete())

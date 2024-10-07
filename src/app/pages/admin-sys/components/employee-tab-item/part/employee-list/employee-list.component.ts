@@ -49,7 +49,7 @@ export class EmployeeListComponent {
       = this.dialog.open<EmployeeDialogComponent, IDialogEmployeeData, IDialogEmployeeResult>(EmployeeDialogComponent, {
         data: {
           dialogType: 'update',
-          employee: { employeeID: employee.employeeID, fullName: employee.fullName, staffUnitID: employee.staffUnitID }
+          data: { employeeID: employee.employeeID, fullName: employee.fullName, staffUnitID: employee.staffUnitID }
         },
       });
 
