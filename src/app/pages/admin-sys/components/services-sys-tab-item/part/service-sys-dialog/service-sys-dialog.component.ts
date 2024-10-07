@@ -180,11 +180,11 @@ export class ServiceSysDialogComponent implements OnInit {
    */
   ngOnInit() {
     // Set init value to fields service name and service desc
-    this.formControlServiceSysName.setValue(this.modelDialogData().serviceSys.serviceName);
-    this.formControlServiceSysDesc.setValue(this.modelDialogData().serviceSys.serviceDesc);
+    this.formControlServiceSysName.setValue(this.modelDialogData().data.serviceName);
+    this.formControlServiceSysDesc.setValue(this.modelDialogData().data.serviceDesc);
 
     // Set init value to field user owner
-    this.modelDialogData().serviceSys.usersIdsAsRoleOwner.map(
+    this.modelDialogData().data.usersIdsAsRoleOwner.map(
       userId => this.addUserToSelectedList(
         this.selectedUsersOwner,
         (() => {
@@ -196,7 +196,7 @@ export class ServiceSysDialogComponent implements OnInit {
     );
 
     // Set init value to field user admin
-    this.modelDialogData().serviceSys.usersIdsAsRoleAdmin.map(
+    this.modelDialogData().data.usersIdsAsRoleAdmin.map(
       userId => this.addUserToSelectedList(
         this.selectedUsersAdmin,
         (() => {
@@ -217,7 +217,7 @@ export class ServiceSysDialogComponent implements OnInit {
 
     this.dialogResult = {
       result: {
-        serviceId: this.modelDialogData().serviceSys.serviceId,
+        serviceId: this.modelDialogData().data.serviceId,
         serviceName: this.formControlServiceSysName.value ?? '',
         serviceDesc: this.formControlServiceSysDesc.value ?? '',
         usersIdsAsRoleUser: [],

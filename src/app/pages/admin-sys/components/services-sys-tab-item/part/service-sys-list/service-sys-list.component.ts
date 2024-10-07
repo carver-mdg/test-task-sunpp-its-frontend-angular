@@ -49,7 +49,7 @@ export class ServiceSysListComponent {
       = this.dialog.open<ServiceSysDialogComponent, IDialogServiceSysData, IDialogServiceSysResult>(ServiceSysDialogComponent, {
         data: {
           dialogType: 'update',
-          serviceSys: {
+          data: {
             serviceId: serviceSys.serviceId,
             serviceName: serviceSys.serviceName,
             serviceDesc: serviceSys.serviceDesc,

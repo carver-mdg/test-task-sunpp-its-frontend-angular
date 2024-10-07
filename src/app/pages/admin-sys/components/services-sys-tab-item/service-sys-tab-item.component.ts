@@ -49,7 +49,7 @@ export class ServiceSysTabItemComponent {
       = this.dialog.open<ServiceSysDialogComponent, IDialogServiceSysData, IDialogServiceSysResult>(ServiceSysDialogComponent, {
         data: {
           dialogType: 'create',
-          serviceSys: { 
+          data: { 
             serviceId: undefined, 
             serviceName: '', 
             serviceDesc: '', 
