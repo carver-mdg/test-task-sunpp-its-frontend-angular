@@ -55,7 +55,6 @@ export class ServiceSysService {
     }
 
     return this.http.post<ServiceSysResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/services/`, dtoToSending)
-      .pipe(map(responseDTO => {console.log(responseDTO); return responseDTO}))
       .pipe(map(responseDTO => ServiceSysResponseDTO.toModel(responseDTO)));
   }
 
