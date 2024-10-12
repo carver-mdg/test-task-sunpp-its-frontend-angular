@@ -58,9 +58,8 @@ export class AdminSysComponent implements OnInit {
     this.loadServicesSys();
     
 
+    // @COMMENT How rewrite several load functions to single code bellow ?
     /*
-    @COMMENT How rewrite several load functions to single code bellow ?
-
         // Load data
         [
           { stateItem: this.pageState.departments, loaderItem: this.departmentService.loadList() },
