@@ -61,12 +61,12 @@ export class ServiceSysDialogComponent implements OnInit {
   usersPossibleToSelect = signal(this.pageState.users.data());
 
   // ----------------------------------- for field of users owner -----------------------------------
-  readonly currentUserOwnerLogin = model<string | undefined>(undefined);
+  readonly currentUserOwnerUserName = model<string | undefined>(undefined);
   readonly selectedUsersOwner = signal<UserModel[]>([]);
   readonly filteredUsersOwner = computed(() => {
-    const currentUserOwnerLogin = this.currentUserOwnerLogin()?.toLowerCase();
-    return currentUserOwnerLogin
-      ? this.usersPossibleToSelect().filter(user => user.login.toLowerCase().includes(currentUserOwnerLogin))
+    const currentUserOwnerUserName = this.currentUserOwnerUserName()?.toLowerCase();
+    return currentUserOwnerUserName
+      ? this.usersPossibleToSelect().filter(user => user.userName.toLowerCase().includes(currentUserOwnerUserName))
       : this.usersPossibleToSelect().slice();
   });
 
@@ -87,7 +87,7 @@ export class ServiceSysDialogComponent implements OnInit {
    * @param event 
    */
   onSelectedUserOwner(event: MatAutocompleteSelectedEvent): void {
-    this.currentUserOwnerLogin.set('');
+    this.currentUserOwnerUserName.set('');
     event.option.deselect();
     this.addUserToSelectedList(this.selectedUsersOwner, event.option.value);
   }
@@ -106,12 +106,12 @@ export class ServiceSysDialogComponent implements OnInit {
 
 
   // ----------------------------------- for field of users admin -----------------------------------
-  readonly currentUserAdminLogin = model<string | undefined>(undefined);
+  readonly currentUserAdminUserName = model<string | undefined>(undefined);
   readonly selectedUsersAdmin = signal<UserModel[]>([]);
   readonly filteredUsersAdmin = computed(() => {
-    const currentUserAdminLogin = this.currentUserAdminLogin()?.toLowerCase();
-    return currentUserAdminLogin
-      ? this.usersPossibleToSelect().filter(user => user.login.toLowerCase().includes(currentUserAdminLogin))
+    const currentUserAdminUserName = this.currentUserAdminUserName()?.toLowerCase();
+    return currentUserAdminUserName
+      ? this.usersPossibleToSelect().filter(user => user.userName.toLowerCase().includes(currentUserAdminUserName))
       : this.usersPossibleToSelect().slice();
   });
 
@@ -131,7 +131,7 @@ export class ServiceSysDialogComponent implements OnInit {
    * @param event 
    */
   onSelectedUserAdmin(event: MatAutocompleteSelectedEvent): void {
-    this.currentUserAdminLogin.set('');
+    this.currentUserAdminUserName.set('');
     event.option.deselect();
     this.addUserToSelectedList(this.selectedUsersAdmin, event.option.value);
   }

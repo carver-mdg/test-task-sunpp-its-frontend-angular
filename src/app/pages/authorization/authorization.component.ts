@@ -16,6 +16,6 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthorizationComponent {
-  login = '';
+  userName = '';
   password = ''; 
 }

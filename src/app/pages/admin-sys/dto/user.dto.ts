@@ -6,13 +6,13 @@ import { UserModel } from "app/models";
  */
 export class UserResponseDTO {
   userID!: number;
-  login!: string;
+  userName!: string;
   employeeID!: number;
 
   static toModel(dto: UserResponseDTO): UserModel {
     return {
       userID: dto.userID,
-      login: dto.login,
+      userName: dto.userName,
       employeeID: dto.employeeID,
     }
   }
@@ -22,13 +22,13 @@ export class UserResponseDTO {
  * DTO for sending to server for create
  */
 export class CreateUserRequestDTO {
-  login!: string;
+  userName!: string;
   employeeID!: number;
 
   static toModel(dto: CreateUserRequestDTO): UserModel {
     return {
       userID: undefined,
-      login: dto.login,
+      userName: dto.userName,
       employeeID: dto.employeeID
     }
   }

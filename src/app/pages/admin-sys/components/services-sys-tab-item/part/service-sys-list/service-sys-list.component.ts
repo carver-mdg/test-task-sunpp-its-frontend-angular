@@ -137,15 +137,15 @@ export class ServiceSysListComponent {
 
 
   /**
-   * Get logins of users by it IDs. For viewed in html template
+   * Get user names by it IDs. For viewed in html template
    * 
    * @param userIDs 
    * @returns 
    */
-  public getLoginsByUsersIDs(userIDs: number[]): string {
+  public getUserNamesByUsersIDs(userIDs: number[]): string {
     return this.pageState.users.data()
       .filter(user => user.userID == userIDs.find(userId => userId == user.userID))
-      .map(user => user.login)
+      .map(user => user.userName)
       .join(', ');
   }
 }

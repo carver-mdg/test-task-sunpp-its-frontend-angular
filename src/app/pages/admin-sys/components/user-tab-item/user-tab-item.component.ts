@@ -49,7 +49,7 @@ export class UserTabItemComponent {
       = this.dialog.open<UserDialogComponent, IDialogUserData, IDialogUserResult>(UserDialogComponent, {
         data: {
           dialogType: 'create',
-          data: { userID: undefined, login: '', employeeID: undefined },
+          data: { userID: undefined, userName: '', employeeID: undefined },
         },
       });
 

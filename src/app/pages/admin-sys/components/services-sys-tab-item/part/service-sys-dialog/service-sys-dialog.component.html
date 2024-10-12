@@ -42,7 +42,7 @@
     <mat-chip-grid #chipGridUsersOwner>
       @for (userOwner of selectedUsersOwner(); track $index) {
         <mat-chip-row (removed)="onRemoveUserOwner(userOwner)">
-          {{userOwner.login}} ({{getEmployeeFullNameByUser(userOwner)}})
+          {{userOwner.userName}} ({{getEmployeeFullNameByUser(userOwner)}})
           <button matChipRemove [attr.aria-label]="'remove ' + userOwner">
             <mat-icon>cancel</mat-icon>
           </button>
@@ -53,7 +53,7 @@
       name="currentUserOwner"
       placeholder="Добавить владельца"
       [formControl]="formControlUserOwner"
-      [(ngModel)]="currentUserOwnerLogin"
+      [(ngModel)]="currentUserOwnerUserName"
       [matChipInputFor]="chipGridUsersOwner"
       [matAutocomplete]="autoUserOwner"
     />
@@ -66,7 +66,7 @@
 
     <mat-autocomplete #autoUserOwner="matAutocomplete" (optionSelected)="onSelectedUserOwner($event)">
       @for (userOwner of filteredUsersOwner(); track userOwner) {
-        <mat-option [value]="userOwner">{{userOwner.login}}</mat-option>
+        <mat-option [value]="userOwner">{{userOwner.userName}}</mat-option>
       }
     </mat-autocomplete>
 
@@ -80,7 +80,7 @@
     <mat-chip-grid #chipGridUsersAdmin>
       @for (userAdmin of selectedUsersAdmin(); track $index) {
         <mat-chip-row (removed)="onRemoveUserAdmin(userAdmin)">
-          {{userAdmin.login}} ({{getEmployeeFullNameByUser(userAdmin)}})
+          {{userAdmin.userName}} ({{getEmployeeFullNameByUser(userAdmin)}})
           <button matChipRemove [attr.aria-label]="'remove ' + userAdmin">
             <mat-icon>cancel</mat-icon>
           </button>
@@ -91,7 +91,7 @@
       name="currentUserAdmin"
       placeholder="Добавить админа"
       [formControl]="formControlUserAdmin"
-      [(ngModel)]="currentUserAdminLogin"
+      [(ngModel)]="currentUserAdminUserName"
       [matChipInputFor]="chipGridUsersAdmin"
       [matAutocomplete]="autoUserAdmin"
     />
@@ -104,7 +104,7 @@
 
     <mat-autocomplete #autoUserAdmin="matAutocomplete" (optionSelected)="onSelectedUserAdmin($event)">
       @for (userAdmin of filteredUsersAdmin(); track userAdmin) {
-        <mat-option [value]="userAdmin">{{userAdmin.login}}</mat-option>
+        <mat-option [value]="userAdmin">{{userAdmin.userName}}</mat-option>
       }
     </mat-autocomplete>
 

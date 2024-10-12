@@ -42,13 +42,13 @@ export class UserDialogComponent implements OnInit {
   filteredOptionsOfEmployees?: Observable<EmployeeModel[]>;
 
   // form fields
-  formControlUserLogin = new FormControl<string | undefined>(undefined);
+  formControlUserUserName = new FormControl<string | undefined>(undefined);
   formControlUserPassword = new FormControl<string | undefined>(undefined);
   formControlEmployee = new FormControl<EmployeeModel | undefined>(undefined);
 
   // if errors are made when filling in the fields, these messages will be displayed
   fieldsErrorMessages = {
-    userLogin: signal<string>(''),
+    userName: signal<string>(''),
     userPassword: signal<string>(''),
     employeeName: signal<string>(''),
   };
@@ -67,7 +67,7 @@ export class UserDialogComponent implements OnInit {
     );
 
     // Set init value to field user.fullName
-    this.formControlUserLogin.setValue(this.modelDialogData().data.login);
+    this.formControlUserUserName.setValue(this.modelDialogData().data.userName);
 
     // Set init value to field employee
     this.formControlEmployee.setValue(
@@ -111,7 +111,7 @@ export class UserDialogComponent implements OnInit {
     this.dialogResult = {
       result: {
         userID: this.modelDialogData().data.userID,
-        login: this.formControlUserLogin.value ?? '',
+        userName: this.formControlUserUserName.value ?? '',
         employeeID: this.formControlEmployee.value?.employeeID,
       }
     };
@@ -136,19 +136,19 @@ export class UserDialogComponent implements OnInit {
   validateFieldsAtDialog(): boolean {
     let isValidationHasError = false;
 
-    let fieldLoginErrors: string[] = [];
+    let fieldUserNameErrors: string[] = [];
     let fieldPasswordErrors: string[] = [];
     let fieldEmployeeErrors: string[] = [];
 
-    // field: user login
-    if (this.formControlUserLogin.value == undefined ||
-      this.formControlUserLogin.value == ''
+    // field: user name
+    if (this.formControlUserUserName.value == undefined ||
+      this.formControlUserUserName.value == ''
     ) {
-      this.formControlUserLogin.markAsDirty();
-      this.formControlUserLogin.markAsTouched();
-      this.formControlUserLogin.updateValueAndValidity();
+      this.formControlUserUserName.markAsDirty();
+      this.formControlUserUserName.markAsTouched();
+      this.formControlUserUserName.updateValueAndValidity();
 
-      fieldLoginErrors.push('Поле не может быть пустым');
+      fieldUserNameErrors.push('Поле не может быть пустым');
       isValidationHasError = true;
     }
 
@@ -176,7 +176,7 @@ export class UserDialogComponent implements OnInit {
       isValidationHasError = true;
     }
 
-    this.fieldsErrorMessages.userLogin.set(fieldLoginErrors.join(', '));
+    this.fieldsErrorMessages.userName.set(fieldUserNameErrors.join(', '));
     this.fieldsErrorMessages.userPassword.set(fieldPasswordErrors.join(', '));
     this.fieldsErrorMessages.employeeName.set(fieldEmployeeErrors.join(', '));
 

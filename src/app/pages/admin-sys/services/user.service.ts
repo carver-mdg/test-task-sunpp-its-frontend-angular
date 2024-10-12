@@ -45,7 +45,7 @@ export class UserService {
       return throwError(() => new Error('employeeID is undefined'));
 
     let dtoToSending: CreateUserRequestDTO = {
-      login: user.login,
+      userName: user.userName,
       employeeID: user.employeeID
     }
 
@@ -68,7 +68,7 @@ export class UserService {
 
     let dtoToSending: UpdateUserRequestDTO = {
       userID: user.userID,
-      login: user.login,
+      userName: user.userName,
       employeeID: user.employeeID
     }
 

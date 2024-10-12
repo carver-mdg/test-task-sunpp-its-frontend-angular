@@ -12,10 +12,10 @@
 
     <mat-card-content>
       <mat-form-field class="auth-input" appearance="fill">
-        <mat-label>Login</mat-label>
-        <input placeholder="login" matInput [(ngModel)]="login" name="login">
-        @if (login) {
-        <button matSuffix mat-icon-button aria-label="Clear" (click)="login=''">
+        <mat-label>UserName</mat-label>
+        <input placeholder="userName" matInput [(ngModel)]="userName" name="userName">
+        @if (userName) {
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="userName=''">
           <mat-icon>close</mat-icon>
         </button>
         }
