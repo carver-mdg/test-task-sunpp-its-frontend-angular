@@ -26,7 +26,7 @@ import { UserService } from 'app/pages/admin-sys/services';
   styleUrl: './user-list.component.scss'
 })
 export class UserListComponent {
-  displayedColumns: string[] = ['userID', 'login', 'employeeID', 'actions'];
+  displayedColumns: string[] = ['userID', 'userName', 'employeeID', 'actions'];
 
   /**
    * 
@@ -49,7 +49,7 @@ export class UserListComponent {
       = this.dialog.open<UserDialogComponent, IDialogUserData, IDialogUserResult>(UserDialogComponent, {
         data: {
           dialogType: 'update',
-          user: { userID: user.userID, login: user.login, employeeID: user.employeeID }
+          data: { userID: user.userID, userName: user.userName, employeeID: user.employeeID }
         },
       });
 
@@ -73,7 +73,7 @@ export class UserListComponent {
     const dialogRef = this.dialog.open<DialogConfirmComponent, IDialogConfirmData, IDialogConfirmResult>(DialogConfirmComponent, {
       data: {
         dialogTitle: 'Удалить запись',
-        dialogContent: `Вы хотите удалить - "${user.login}" ?`,
+        dialogContent: `Вы хотите удалить - "${user.userName}" ?`,
         dialogBtnYesTitle: 'Удалить',
         dialogBtnNoTitle: 'Отмена'
       },

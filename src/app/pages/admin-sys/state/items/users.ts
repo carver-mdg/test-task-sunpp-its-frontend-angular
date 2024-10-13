@@ -40,7 +40,7 @@ export class UsersState {
       if (itemUser.userID == user.userID) {
         return {
           userID: user.userID,
-          login: user.login,
+          userName: user.userName,
           employeeID: user.employeeID
         }
       }

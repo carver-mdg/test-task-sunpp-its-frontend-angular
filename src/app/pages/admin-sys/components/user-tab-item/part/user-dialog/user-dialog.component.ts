@@ -35,21 +35,20 @@ import { IDialogUserData, IDialogUserResult } from './types';
 export class UserDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<UserDialogComponent, UserModel>);
   readonly data = inject<IDialogUserData>(MAT_DIALOG_DATA);
-  readonly user = model(this.data);
+  readonly modelDialogData = model(this.data);
+  dialogResult?: IDialogUserResult = undefined;
 
   pageState = inject(PageState);
   filteredOptionsOfEmployees?: Observable<EmployeeModel[]>;
 
-  dialogResult?: IDialogUserResult = undefined;
-
   // form fields
-  formControlUserLogin = new FormControl<string | undefined>(undefined);
+  formControlUserUserName = new FormControl<string | undefined>(undefined);
   formControlUserPassword = new FormControl<string | undefined>(undefined);
   formControlEmployee = new FormControl<EmployeeModel | undefined>(undefined);
 
   // if errors are made when filling in the fields, these messages will be displayed
   fieldsErrorMessages = {
-    userLogin: signal<string>(''),
+    userName: signal<string>(''),
     userPassword: signal<string>(''),
     employeeName: signal<string>(''),
   };
@@ -68,12 +67,12 @@ export class UserDialogComponent implements OnInit {
     );
 
     // Set init value to field user.fullName
-    this.formControlUserLogin.setValue(this.user().user.login);
+    this.formControlUserUserName.setValue(this.modelDialogData().data.userName);
 
     // Set init value to field employee
     this.formControlEmployee.setValue(
       this.pageState.employees.data().find(
-        item => item.employeeID == this.user().user.employeeID
+        item => item.employeeID == this.modelDialogData().data.employeeID
       )
     );
   }
@@ -111,8 +110,8 @@ export class UserDialogComponent implements OnInit {
 
     this.dialogResult = {
       result: {
-        userID: this.user().user.userID,
-        login: this.formControlUserLogin.value ?? '',
+        userID: this.modelDialogData().data.userID,
+        userName: this.formControlUserUserName.value ?? '',
         employeeID: this.formControlEmployee.value?.employeeID,
       }
     };
@@ -128,6 +127,7 @@ export class UserDialogComponent implements OnInit {
   }
 
 
+  // @TODO It's better to rewrite through validators in form controls
   /**
    * Checking fields at dialog (e.g. field input must have value, ...)
    * 
@@ -136,19 +136,19 @@ export class UserDialogComponent implements OnInit {
   validateFieldsAtDialog(): boolean {
     let isValidationHasError = false;
 
-    let fieldLoginErrors: string[] = [];
+    let fieldUserNameErrors: string[] = [];
     let fieldPasswordErrors: string[] = [];
     let fieldEmployeeErrors: string[] = [];
 
-    // field: user login
-    if (this.formControlUserLogin.value == undefined ||
-      this.formControlUserLogin.value == ''
+    // field: user name
+    if (this.formControlUserUserName.value == undefined ||
+      this.formControlUserUserName.value == ''
     ) {
-      this.formControlUserLogin.markAsDirty();
-      this.formControlUserLogin.markAsTouched();
-      this.formControlUserLogin.updateValueAndValidity();
+      this.formControlUserUserName.markAsDirty();
+      this.formControlUserUserName.markAsTouched();
+      this.formControlUserUserName.updateValueAndValidity();
 
-      fieldLoginErrors.push('Поле не может быть пустым');
+      fieldUserNameErrors.push('Поле не может быть пустым');
       isValidationHasError = true;
     }
 
@@ -176,7 +176,7 @@ export class UserDialogComponent implements OnInit {
       isValidationHasError = true;
     }
 
-    this.fieldsErrorMessages.userLogin.set(fieldLoginErrors.join(', '));
+    this.fieldsErrorMessages.userName.set(fieldUserNameErrors.join(', '));
     this.fieldsErrorMessages.userPassword.set(fieldPasswordErrors.join(', '));
     this.fieldsErrorMessages.employeeName.set(fieldEmployeeErrors.join(', '));
 

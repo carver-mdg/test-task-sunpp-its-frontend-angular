@@ -35,12 +35,11 @@ import { IDialogEmployeeData, IDialogEmployeeResult } from './types';
 export class EmployeeDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<EmployeeDialogComponent, EmployeeModel>);
   readonly data = inject<IDialogEmployeeData>(MAT_DIALOG_DATA);
-  readonly employee = model(this.data);
+  readonly modelDialogData = model(this.data);
+  dialogResult?: IDialogEmployeeResult = undefined;
 
   pageState = inject(PageState);
   filteredOptionsOfStaffUnits?: Observable<StaffUnitModel[]>;
-
-  dialogResult?: IDialogEmployeeResult = undefined;
 
   // form fields
   formControlEmployeeFullName = new FormControl<string | undefined>(undefined);
@@ -66,12 +65,12 @@ export class EmployeeDialogComponent implements OnInit {
     );
 
     // Set init value to field employee.fullName
-    this.formControlEmployeeFullName.setValue(this.employee().employee.fullName);
+    this.formControlEmployeeFullName.setValue(this.modelDialogData().data.fullName);
 
     // Set init value to field staff unit
     this.formControlStaffUnit.setValue(
       this.pageState.staffUnits.data().find(
-        item => item.staffUnitID == this.employee().employee.staffUnitID
+        item => item.staffUnitID == this.modelDialogData().data.staffUnitID
       )
     );
   }
@@ -109,7 +108,7 @@ export class EmployeeDialogComponent implements OnInit {
 
     this.dialogResult = {
       result: {
-        employeeID: this.employee().employee.employeeID,
+        employeeID: this.modelDialogData().data.employeeID,
         fullName: this.formControlEmployeeFullName.value ?? '',
         staffUnitID: this.formControlStaffUnit.value?.staffUnitID,
       }
@@ -126,6 +125,7 @@ export class EmployeeDialogComponent implements OnInit {
   }
 
 
+  // @TODO It's better to rewrite through validators in form controls
   /**
    * Checking fields at dialog (e.g. field input must have value, ...)
    * 

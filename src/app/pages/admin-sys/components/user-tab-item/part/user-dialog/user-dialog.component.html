@@ -1,21 +1,21 @@
 <h3 mat-dialog-title>
-  @if(user().dialogType == 'create') { Добавить пользователя }
-  @else if(user().dialogType == 'update') { Обновить пользователя }
+  @if(modelDialogData().dialogType == 'create') { Добавить пользователя }
+  @else if(modelDialogData().dialogType == 'update') { Обновить пользователя }
 </h3>
 <mat-divider />
 
 <mat-dialog-content>
   <mat-form-field class="field-input">
-    <mat-label>Логин пользователя</mat-label>
-    <input matInput [formControl]="formControlUserLogin" required />
+    <mat-label>Имя пользователя</mat-label>
+    <input matInput [formControl]="formControlUserUserName" required />
 
-    @if (formControlUserLogin.value) {
-    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlUserLogin.setValue('')">
+    @if (formControlUserUserName.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlUserUserName.setValue('')">
       <mat-icon>close</mat-icon>
     </button>
     }
 
-    @if(!formControlUserLogin.valid){ <mat-error>{{fieldsErrorMessages.userLogin()}}</mat-error> }
+    @if(!formControlUserUserName.valid){ <mat-error>{{fieldsErrorMessages.userName()}}</mat-error> }
   </mat-form-field>
 
   <mat-form-field class="field-input">

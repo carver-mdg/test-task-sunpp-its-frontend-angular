@@ -1,29 +1,28 @@
 <p>
-  Пользователь "admin-sys" с паролем "password" создаёт сервисы и назначает им владельцев, админов.
+  Пользователь "admin" с паролем "pass" создаёт сервисы и назначает им владельцев, админов.
   Так же он добавляет в систему работников, пользователей, цеха, штатные единицы.
 </p>
 <div class="center-of-window">
-  <mat-card class="auth-window">
+  <mat-card class="dialog">
     <mat-card-header>
       <mat-card-title>
         Sign in
       </mat-card-title>
     </mat-card-header>
+    <mat-divider />
 
-    <mat-card-content>
-      <mat-form-field class="auth-input" appearance="fill">
-        <mat-label>Login</mat-label>
-        <input placeholder="login" matInput [(ngModel)]="login" name="login">
-        @if (login) {
-        <button matSuffix mat-icon-button aria-label="Clear" (click)="login=''">
+    <mat-card-content class="dialog-content">
+      <mat-form-field class="dialog-input" appearance="fill">
+        <mat-label>UserName</mat-label>
+        <input placeholder="userName" matInput [(ngModel)]="userName" name="userName">
+        @if (userName) {
+        <button matSuffix mat-icon-button aria-label="Clear" (click)="userName=''">
           <mat-icon>close</mat-icon>
         </button>
         }
       </mat-form-field>
 
-      <br />
-
-      <mat-form-field class="auth-input" appearance="outline">
+      <mat-form-field class="dialog-input" appearance="fill">
         <mat-label>Password</mat-label>
         <input type="password" matInput placeholder="password" [(ngModel)]="password" name="password">
         @if (password) {
@@ -36,7 +35,7 @@
 
     <mat-divider />
     <mat-card-actions>
-      <button mat-stroked-button class="auth-btn">SignIn</button>
+      <button mat-stroked-button class="dialog-btn" (click)="onBtnClickSignIn()">SignIn</button>
     </mat-card-actions>
   </mat-card>
 

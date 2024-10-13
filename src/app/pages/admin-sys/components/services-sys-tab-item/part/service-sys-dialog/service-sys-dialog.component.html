@@ -1,0 +1,119 @@
+<h3 mat-dialog-title>
+  @if(modelDialogData().dialogType == 'create') { Добавить сервис }
+  @else if(modelDialogData().dialogType == 'update') { Обновить сервис }
+</h3>
+<mat-divider />
+
+<mat-dialog-content>
+
+  <!-- Service name -->
+  <mat-form-field class="field-input">
+    <mat-label>Название сервиса</mat-label>
+    <input matInput [formControl]="formControlServiceSysName" required />
+
+    @if (formControlServiceSysName.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlServiceSysName.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+
+    @if(!formControlServiceSysName.valid){ <mat-error>{{fieldsErrorMessages.serviceName()}}</mat-error> }
+  </mat-form-field>
+
+
+  <!-- Service description -->
+  <mat-form-field class="field-input">
+    <mat-label>Описание сервиса</mat-label>
+    <textarea matInput [formControl]="formControlServiceSysDesc" required> </textarea>
+
+    @if (formControlServiceSysDesc.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlServiceSysDesc.setValue('')">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+
+    @if(!formControlServiceSysDesc.valid){ <mat-error>{{fieldsErrorMessages.serviceDesc()}}</mat-error> }
+  </mat-form-field>
+  
+
+  <!-- List of users owner of the service -->
+  <mat-form-field class="field-input">
+    <mat-label>Владельцы сервиса</mat-label>
+    <mat-chip-grid #chipGridUsersOwner>
+      @for (userOwner of selectedUsersOwner(); track $index) {
+        <mat-chip-row (removed)="onRemoveUserOwner(userOwner)">
+          {{userOwner.userName}} ({{getEmployeeFullNameByUser(userOwner)}})
+          <button matChipRemove [attr.aria-label]="'remove ' + userOwner">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <input
+      name="currentUserOwner"
+      placeholder="Добавить владельца"
+      [formControl]="formControlUserOwner"
+      [(ngModel)]="currentUserOwnerUserName"
+      [matChipInputFor]="chipGridUsersOwner"
+      [matAutocomplete]="autoUserOwner"
+    />
+
+    @if (selectedUsersOwner().length) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="onClickClearUsersOwner()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+
+    <mat-autocomplete #autoUserOwner="matAutocomplete" (optionSelected)="onSelectedUserOwner($event)">
+      @for (userOwner of filteredUsersOwner(); track userOwner) {
+        <mat-option [value]="userOwner">{{userOwner.userName}}</mat-option>
+      }
+    </mat-autocomplete>
+
+    @if(!formControlUserOwner.valid){ <mat-error>{{fieldsErrorMessages.usersOwner()}}</mat-error> }
+  </mat-form-field>
+
+
+  <!-- List of users admin of the service -->
+  <mat-form-field class="field-input">
+    <mat-label>Админы сервиса</mat-label>
+    <mat-chip-grid #chipGridUsersAdmin>
+      @for (userAdmin of selectedUsersAdmin(); track $index) {
+        <mat-chip-row (removed)="onRemoveUserAdmin(userAdmin)">
+          {{userAdmin.userName}} ({{getEmployeeFullNameByUser(userAdmin)}})
+          <button matChipRemove [attr.aria-label]="'remove ' + userAdmin">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+    </mat-chip-grid>
+    <input
+      name="currentUserAdmin"
+      placeholder="Добавить админа"
+      [formControl]="formControlUserAdmin"
+      [(ngModel)]="currentUserAdminUserName"
+      [matChipInputFor]="chipGridUsersAdmin"
+      [matAutocomplete]="autoUserAdmin"
+    />
+
+    @if (selectedUsersAdmin().length) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="onClickClearUsersAdmin()">
+        <mat-icon>close</mat-icon>
+      </button>
+      }
+
+    <mat-autocomplete #autoUserAdmin="matAutocomplete" (optionSelected)="onSelectedUserAdmin($event)">
+      @for (userAdmin of filteredUsersAdmin(); track userAdmin) {
+        <mat-option [value]="userAdmin">{{userAdmin.userName}}</mat-option>
+      }
+    </mat-autocomplete>
+
+    @if(!formControlUserAdmin.valid){ <mat-error>{{fieldsErrorMessages.usersAdmin()}}</mat-error> }
+  </mat-form-field>
+</mat-dialog-content>
+<mat-divider />
+
+<mat-dialog-actions>
+  <button mat-button (click)="onClickOk()">Ok</button>
+  <button mat-button (click)="onClickCancel()"> Cancel </button>
+</mat-dialog-actions>

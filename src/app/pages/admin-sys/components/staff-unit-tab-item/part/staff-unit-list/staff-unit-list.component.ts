@@ -49,7 +49,7 @@ export class StaffUnitListComponent {
       = this.dialog.open<StaffUnitDialogComponent, IDialogStaffUnitData, IDialogStaffUnitResult>(StaffUnitDialogComponent, {
         data: {
           dialogType: 'update',
-          staffUnit: { staffUnitID: staffUnit.staffUnitID, staffUnitName: staffUnit.staffUnitName, departmentID: staffUnit.departmentID }
+          data: { staffUnitID: staffUnit.staffUnitID, staffUnitName: staffUnit.staffUnitName, departmentID: staffUnit.departmentID }
         },
       });
 

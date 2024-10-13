@@ -52,7 +52,7 @@ export class DepartmentTabItemComponent {
       = this.dialog.open<DepartmentDialogComponent, IDialogDepartmentData, IDialogDepartmentResult>(DepartmentDialogComponent, {
         data: {
           dialogType: 'create',
-          department: { departmentID: undefined, departmentName: '' },
+          data: { departmentID: undefined, departmentName: '' },
         },
       });
 

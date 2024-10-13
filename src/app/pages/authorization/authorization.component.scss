@@ -1,18 +1,24 @@
 .center-of-window {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-.auth-window {
-  background-color: #ccc;
+.dialog {
+  background-color: #333;
+  box-shadow: 0px 3px 10px black;
 }
 
-.auth-btn {
+.dialog-btn {
   background-color: bisque;
 }
 
-.auth-input {
+.dialog-input {
   width: 200px;
+  display: block;
+}
+
+.dialog-content {
+  padding: 15px 10px 0px 10px;
 }

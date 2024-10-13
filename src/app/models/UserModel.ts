@@ -1,5 +1,5 @@
 export class UserModel {
   userID: number | undefined;
-  login: string = '';
+  userName: string = '';
   employeeID: number | undefined;
 }
