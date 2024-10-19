@@ -4,3 +4,7 @@ export * from './EmployeeModel';
 export * from './UserModel';
 export * from './ServiceSysModel';
 export * from './AuthModel';
+
+export * from './ServiceModel';
+export * from './UserRoleInServiceModel';
+export * from './RequestHistoryModel';

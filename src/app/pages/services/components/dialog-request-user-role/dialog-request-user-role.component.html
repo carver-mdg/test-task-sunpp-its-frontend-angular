@@ -1,0 +1,33 @@
+<h3 mat-dialog-title>
+  Запросить роль пользователя
+</h3>
+<mat-divider />
+
+<mat-dialog-content>
+  <mat-form-field class="field-input">
+    <mat-label>Роль пользователя</mat-label>
+    <input matInput [formControl]="formControlUserRole" [matAutocomplete]="auto" required>
+
+    @if (formControlUserRole.value) {
+    <button matSuffix mat-icon-button aria-label="Clear" (click)="formControlUserRole.setValue(undefined)">
+      <mat-icon>close</mat-icon>
+    </button>
+    }
+
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnUserRole">
+      @for (option of filteredOptionsOfUserRoles | async; track option) {
+      <mat-option [value]="option">
+          {{option.roleName}}
+      </mat-option>
+      }
+    </mat-autocomplete>
+
+    @if(!formControlUserRole.valid){ <mat-error>{{fieldsErrorMessages.userRoleName()}}</mat-error>}
+  </mat-form-field>
+</mat-dialog-content>
+<mat-divider />
+
+<mat-dialog-actions>
+  <button mat-button (click)="onClickOk()">Ok</button>
+  <button mat-button (click)="onClickCancel()"> Cancel </button>
+</mat-dialog-actions>

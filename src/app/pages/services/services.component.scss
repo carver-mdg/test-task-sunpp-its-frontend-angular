@@ -10,6 +10,10 @@
   margin: 5px;
 }
 
+.item-card-divider {
+  border: 1px dotted #333;
+}
+
 /* mobile */
 @media (min-width: 0) and (max-width: 425px) {
   .item-card {
@@ -31,3 +35,18 @@
   font-weight: bolder;
   font-style: italic;
 }
+
+.access-allowed {
+  background-color: rgb(21, 43, 21);
+  color: #0f0;
+}
+
+.access-denied {
+  background-color: rgb(34, 9, 9);
+  color: #f00;
+}
+
+.text-mark-card {
+  color: #ff2;
+}
+

@@ -10,6 +10,7 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
 })
 export class ServiceItemPageComponent implements OnInit {
   serviceId: string = '';
+  dataFromServer: string = '';
 
 
   /**
@@ -27,6 +28,9 @@ export class ServiceItemPageComponent implements OnInit {
    */
   ngOnInit(): void {
     this.serviceId = this.activatedRoute.snapshot.paramMap.get('id') ?? '';
+    this.dataFromServer = this.activatedRoute.snapshot.paramMap.get('data') ?? '';
+    // this.dataFromServer = this.activatedRoute.data
+    // console.log(this.activatedRoute.data);
   }
 
 }
