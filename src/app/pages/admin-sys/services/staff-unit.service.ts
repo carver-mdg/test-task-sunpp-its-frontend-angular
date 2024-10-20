@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AppSettings } from 'app/AppSettings';
 import { StaffUnitModel } from 'app/models';
 import { map, Observable, throwError } from 'rxjs';
-import { CreateStaffUnitRequestDTO, StaffUnitResponseDTO, UpdateStaffUnitRequestDTO } from '../dto';
+import { CreateStaffUnitRequestDTO, StaffUnitResponseDTO, UpdateStaffUnitRequestDTO } from './dto';
 
 @Injectable({
   providedIn: 'root'

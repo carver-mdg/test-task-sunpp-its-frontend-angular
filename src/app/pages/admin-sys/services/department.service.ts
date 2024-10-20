@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AppSettings } from 'app/AppSettings';
 import { DepartmentModel } from 'app/models';
 import { delay, map, Observable, throwError } from 'rxjs';
-import { CreateDepartmentRequestDTO, DepartmentResponseDTO, UpdateDepartmentRequestDTO } from '../dto';
+import { CreateDepartmentRequestDTO, DepartmentResponseDTO, UpdateDepartmentRequestDTO } from './dto';
 
 @Injectable({
   providedIn: 'root'

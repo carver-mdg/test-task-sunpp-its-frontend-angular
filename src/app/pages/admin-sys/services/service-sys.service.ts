@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AppSettings } from 'app/AppSettings';
 import { ServiceSysModel } from 'app/models';
 import { map, Observable, throwError } from 'rxjs';
-import { CreateServiceSysRequestDTO, ServiceSysResponseDTO, UpdateServiceSysRequestDTO } from '../dto';
+import { CreateServiceSysRequestDTO, ServiceSysResponseDTO, UpdateServiceSysRequestDTO } from './dto';
 
 @Injectable({
   providedIn: 'root'
