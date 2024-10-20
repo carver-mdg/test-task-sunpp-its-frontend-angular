@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { hasRoleGuard, isHasUserAccessToService } from './auth/auth.guard';
+import { isHasUserAccessToSystem, isHasUserAccessToServiceItem } from './auth/auth.guard';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { AdminSysComponent } from './pages/admin-sys/admin-sys.component';
 import { AuthorizationComponent } from './pages/authorization/authorization.component';
@@ -22,20 +22,20 @@ export const routes: Routes = [
   {
     path: 'admin-sys',
     component: AdminSysComponent,
-    canActivate: [hasRoleGuard],
+    canActivate: [isHasUserAccessToSystem],
     data: {
       roles: ["admin"]
     }
   },
   {
     path: 'services',
-    canActivate: [hasRoleGuard],
+    canActivate: [isHasUserAccessToSystem],
     data: {
       roles: ["user"]
     },
     children: [
       { path: '', component: ServicesComponent },
-      { path: ':id', component: ServiceItemPageComponent, canActivate: [isHasUserAccessToService] },
+      { path: ':id', component: ServiceItemPageComponent, canActivate: [isHasUserAccessToServiceItem] },
     ]
   },
   { path: '**', component: PageNotFoundComponent },
