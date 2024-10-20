@@ -1,15 +1,25 @@
 <div class="mat-typography app-frame mat-app-background">
+  @if(isShowHeader()) {
   <mat-toolbar class="toolbar">
     <span class="toolbar-spacer"></span>
-    <span>Logged as 'some user'</span>
+    @if(authService.getUserName() !== undefined) {
+    <span>
+      Logged as
+      <i><b>{{authService.getUserName()}}</b></i>
+    </span>
 
-    <a class="button" routerLink="/admin-sys" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
+    <!-- <a class="button" routerLink="/admin-sys" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
       admin-sys
     </a>
     <a class="button" routerLink="/services" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
       services
+    </a> -->
+    <a class="button" routerLink="/authorization" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
+      signOut
     </a>
+    }
   </mat-toolbar>
+  }
 
   <router-outlet />
 

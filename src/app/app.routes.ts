@@ -1,13 +1,11 @@
 import { Routes } from '@angular/router';
-import { hasRoleGuard } from './has-role.guard';
-import { Role } from './role';
+import { hasRoleGuard } from './auth/has-role.guard';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { AdminSysComponent } from './pages/admin-sys/admin-sys.component';
 import { AuthorizationComponent } from './pages/authorization/authorization.component';
 import { ServicesComponent } from './pages/services/services.component';
 
 export const routes: Routes = [
-  // { path: '', redirectTo: '/heroes-list', pathMatch: 'full' },
   {
     path: 'authorization',
     component: AuthorizationComponent,
@@ -20,10 +18,16 @@ export const routes: Routes = [
     component: AdminSysComponent,
     canActivate: [hasRoleGuard],
     data: {
-      // roles: [Role.ADMIN_SYS]
-      roles: [Role.ADMIN_SYS, Role.USER]
+      roles: ["admin"]
     }
   },
-  { path: 'services', component: ServicesComponent },
+  { 
+    path: 'services', 
+    component: ServicesComponent,
+    canActivate: [hasRoleGuard],
+    data: {
+      roles: ["admin", "user"]
+    }
+  },
   { path: '**', component: PageNotFoundComponent },
 ];
