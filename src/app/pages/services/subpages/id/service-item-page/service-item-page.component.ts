@@ -1,5 +1,8 @@
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ServicesService } from 'app/pages/services/services';
 
 @Component({
   selector: 'app-service-item-page',
@@ -9,28 +12,62 @@ import { ActivatedRoute, Route, Router } from '@angular/router';
   styleUrl: './service-item-page.component.scss'
 })
 export class ServiceItemPageComponent implements OnInit {
-  serviceId: string = '';
+  serviceId: number | undefined;
   dataFromServer: string = '';
 
 
   /**
+   * Controller
    * 
    * @param activatedRoute 
    */
   constructor(
-    private activatedRoute: ActivatedRoute
+    private servicesServices: ServicesService,
+    private activatedRoute: ActivatedRoute,
+    private readonly snackBar: MatSnackBar,
   ) {
   }
 
 
   /**
-   * 
+   * Component init
    */
   ngOnInit(): void {
-    this.serviceId = this.activatedRoute.snapshot.paramMap.get('id') ?? '';
-    this.dataFromServer = this.activatedRoute.snapshot.paramMap.get('data') ?? '';
-    // this.dataFromServer = this.activatedRoute.data
-    // console.log(this.activatedRoute.data);
+    const serviceId = this.activatedRoute.snapshot.paramMap.get('id');
+    if (serviceId == undefined) throw new Error("ServiceID is undefined");
+
+    this.serviceId = parseInt(serviceId);
+    
+    this.servicesServices.loadServiceItem(this.serviceId).subscribe(
+      {
+        next: data => this.dataFromServer = data,
+        error: err => this.showError(err),
+      }
+    );
+  }
+
+
+  /**
+   * Show error
+   * 
+   * @param error 
+   */
+  private showError(error: any) {
+    let errMessage: string | undefined = undefined;
+    if (error instanceof HttpErrorResponse) {
+      if (error.status == HttpStatusCode.Forbidden)
+        errMessage = "У вас нет доступа к сервису";
+      else errMessage = error.message;
+    }
+    else
+      errMessage = error;
+
+    this.snackBar.open(errMessage?.toString() ?? 'unknown error', 'Ok', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-error'],
+    });
   }
 
 }

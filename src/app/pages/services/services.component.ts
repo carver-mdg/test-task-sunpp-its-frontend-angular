@@ -1,18 +1,20 @@
-import { Component, ChangeDetectionStrategy, OnInit, signal } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
+import { CommonModule } from '@angular/common';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { ServicesService } from './services';
-import { ServiceModel, UserRoleInServiceModel } from 'app/models';
-import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'app/auth/auth.service';
+import { ServiceModel, UserRoleInServiceModel } from 'app/models';
+import { lastValueFrom } from 'rxjs';
 import { DialogRequestUserRoleComponent } from './components/dialog-request-user-role/dialog-request-user-role.component';
 import { IDialogRequestUserRoleData, IDialogRequestUserRoleResult } from './components/dialog-request-user-role/types';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { CommonModule } from '@angular/common';
 import { DialogRequestsHistoryComponent } from './components/dialog-requests-history/dialog-requests-history.component';
-import { IDialogRequestHistoryResult, IDialogRequestHistoryData } from './components/dialog-requests-history/types';
+import { IDialogRequestHistoryData, IDialogRequestHistoryResult } from './components/dialog-requests-history/types';
+import { ServicesService } from './services';
 
 @Component({
   selector: 'app-services',
@@ -41,6 +43,7 @@ export class ServicesComponent implements OnInit {
     private servicesServices: ServicesService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private readonly authService: AuthService,
     private readonly dialog: MatDialog,
     private readonly snackBar: MatSnackBar,
   ) { }
@@ -52,14 +55,10 @@ export class ServicesComponent implements OnInit {
   ngOnInit() {
     this.servicesServices.loadList().subscribe({
       next: services => this.services.set(services),
-      // error: (err) => this.pageState.employees.loadingState.set(StateLoadingItem.error(err)),
-      // complete: () => this.pageState.employees.loadingState.set(StateLoadingItem.complete())
     });
 
     this.servicesServices.loadUserRoleTypesInService().subscribe({
       next: userRoleTypes => this.userRoleTypes.set(userRoleTypes),
-      // error: (err) => this.pageState.employees.loadingState.set(StateLoadingItem.error(err)),
-      // complete: () => this.pageState.employees.loadingState.set(StateLoadingItem.complete())
     });
   }
 
@@ -69,17 +68,16 @@ export class ServicesComponent implements OnInit {
    * 
    * @param serviceId 
    */
-  onBtnClickOpenService(serviceId: number | undefined) {
+  async onBtnClickOpenService(serviceId: number | undefined) {
     if (serviceId == undefined) throw new Error("ServiceID is undefined");
 
-    this.servicesServices.loadServiceItem(serviceId).subscribe(
-      {
-        next: data => {
-          this.router.navigate(['./', serviceId, { data }], { relativeTo: this.activatedRoute });
-        },
-        error: err => this.showError(err),
-      }
-    );
+    // check if the user has access to service item
+    try {
+      await lastValueFrom(this.authService.isHasAccessUserToService(serviceId));
+      this.router.navigate(['./', serviceId], { relativeTo: this.activatedRoute });
+    } catch (err) {
+      this.showError(err);
+    }
   }
 
 
