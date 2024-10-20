@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { AppSettings } from 'app/AppSettings';
 import { UserModel } from 'app/models';
 import { map, Observable, throwError } from 'rxjs';
-import { CreateUserRequestDTO, UserResponseDTO, UpdateUserRequestDTO } from '../dto';
+import { CreateUserRequestDTO, UserResponseDTO, UpdateUserRequestDTO } from './dto';
 
 @Injectable({
   providedIn: 'root'
