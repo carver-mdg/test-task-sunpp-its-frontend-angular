@@ -4,7 +4,7 @@ import { AppSettings } from 'app/AppSettings';
 import { AuthService } from 'app/auth/auth.service';
 import { RequestHistoryModel, ServiceModel, UserRoleInServiceModel } from 'app/models';
 import { map, Observable } from 'rxjs';
-import { RequestHistoryResponseDTO, ServiceResponseDTO, UserRoleInServiceResponseDTO } from '../dto';
+import { RequestHistoryResponseDTO, ServiceResponseDTO, UserRoleInServiceResponseDTO } from './dto';
 
 @Injectable({
   providedIn: 'root'
