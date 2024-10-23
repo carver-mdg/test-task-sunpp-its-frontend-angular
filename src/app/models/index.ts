@@ -8,3 +8,5 @@ export * from './AuthModel';
 export * from './ServiceModel';
 export * from './UserRoleInServiceModel';
 export * from './RequestHistoryModel';
+export * from './ServiceWaitingAccessModel';
+export * from './ResponseRequestObtainUserRoleInServiceModel';

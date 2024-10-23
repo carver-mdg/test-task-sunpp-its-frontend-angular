@@ -2,9 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppSettings } from 'app/AppSettings';
 import { AuthService } from 'app/auth/auth.service';
-import { RequestHistoryModel, ServiceModel, UserRoleInServiceModel } from 'app/models';
+import { RequestHistoryModel, ResponseRequestObtainUserRoleInServiceModel, ServiceModel, ServiceWaitingAccessModel, UserRoleInServiceModel } from 'app/models';
 import { map, Observable } from 'rxjs';
-import { RequestHistoryResponseDTO, ServiceResponseDTO, UserRoleInServiceResponseDTO } from './dto';
+import { CreateResponseRequestObtainUserRoleInServiceRequestDTO, RequestHistoryResponseDTO, ServiceResponseDTO, ServicesWaitingAccessResponseDTO, UserRoleInServiceResponseDTO } from './dto';
 
 @Injectable({
   providedIn: 'root'
@@ -43,19 +43,37 @@ export class ServicesService {
 
 
   /**
+   * Loading services which waiting approved to access
+   * 
+   * @returns 
+   */
+  public loadServicesWaitingAccess(userId: number): Observable<ServiceWaitingAccessModel[]> {
+    return this.http.get<ServicesWaitingAccessResponseDTO[]>(`${this.appSettings.baseUrlAPI}/api/v1/services/users/${userId}/access/response/waiting`)
+      .pipe(map((resultDTO) => {
+        let servicesWaitngAccess: ServiceWaitingAccessModel[] = [];
+        resultDTO.forEach(
+          itemServiceDTO =>
+            servicesWaitngAccess.push(ServicesWaitingAccessResponseDTO.toModel(itemServiceDTO))
+        );
+        return servicesWaitngAccess;
+      }))
+  }
+
+
+  /**
    * Load service item data from server
    * 
    * @returns 
    */
   public loadServiceItem(service_id: number): Observable<string> {
     const user_id: number = this.authService.getUserId();
-    
+
     let options = {
       headers: new HttpHeaders({
-        'Accept':'text/plain'
+        'Accept': 'text/plain'
       }),
       'responseType': 'text' as 'json'
-  }
+    }
 
     return this.http.get<string>(`${this.appSettings.baseUrlAPI}/api/v1/services/${service_id}/users/${user_id}`, options);
   }
@@ -85,6 +103,7 @@ export class ServicesService {
    * @returns 
    */
   public loadRequestsHistory(service_id: number): Observable<RequestHistoryModel[]> {
+    // @FIXME not released
     return this.http.get<RequestHistoryResponseDTO[]>(`${this.appSettings.baseUrlAPI}/api/v1/services/${service_id}/history`)
       .pipe(map((resultDTO) => {
         let requestsHistory: RequestHistoryModel[] = [];
@@ -93,5 +112,35 @@ export class ServicesService {
         )
         return requestsHistory;
       }))
+  }
+
+
+  /**
+   * Submit a request to obtain a role in the service
+   * 
+   * @param serviceId 
+   * @param userRole 
+   * @returns 
+   */
+  public sendRequestObtainUserRoleInService(serviceId: number, userId: number, userRoleId: number): Observable<void> {
+    return this.http.post<void>(`${this.appSettings.baseUrlAPI}/api/v1/services/${serviceId}/request/obtain/users/${userId}/role/${userRoleId}`, {});
+  }
+
+
+  /**
+   * Send response access grant to service
+   * 
+   * @param serviceId 
+   * @param fromUserId 
+   * @param toUserId
+   * @param status
+   * @returns 
+   */
+  public sendResponseAccessGrantToService(serviceId: number, fromUserId: number, toUserId: number, responseOfUser: ResponseRequestObtainUserRoleInServiceModel): Observable<void> {
+    let dtoToSending: CreateResponseRequestObtainUserRoleInServiceRequestDTO = {
+      typeResponseName: responseOfUser.typeResponseName
+    };
+    
+    return this.http.post<void>(`${this.appSettings.baseUrlAPI}/api/v1/services/${serviceId}/request/obtain/role/users/from/${fromUserId}/to/${toUserId}`, dtoToSending);
   }
 }

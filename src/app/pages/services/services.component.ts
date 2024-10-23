@@ -8,7 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/auth/auth.service';
-import { ServiceModel, UserRoleInServiceModel } from 'app/models';
+import { ServiceModel, ServiceWaitingAccessModel, UserRoleInServiceModel } from 'app/models';
 import { lastValueFrom } from 'rxjs';
 import { DialogRequestUserRoleComponent } from './components/dialog-request-user-role/dialog-request-user-role.component';
 import { IDialogRequestUserRoleData, IDialogRequestUserRoleResult } from './components/dialog-request-user-role/types';
@@ -29,6 +29,7 @@ import { ServicesService } from './services';
 })
 export class ServicesComponent implements OnInit {
   services = signal<ServiceModel[]>([]);
+  servicesWaitingAccess = signal<ServiceWaitingAccessModel[]>([]);
   userRoleTypes = signal<UserRoleInServiceModel[]>([]);
 
 
@@ -53,12 +54,19 @@ export class ServicesComponent implements OnInit {
    * Lifecycle hook that is called after Angular has initialized
    */
   ngOnInit() {
+    // load services list
     this.servicesServices.loadList().subscribe({
       next: services => this.services.set(services),
     });
 
+    // load possible user role types in the service
     this.servicesServices.loadUserRoleTypesInService().subscribe({
       next: userRoleTypes => this.userRoleTypes.set(userRoleTypes),
+    });
+
+    // load services list which waiting approve access
+    this.servicesServices.loadServicesWaitingAccess(this.authService.getUserId()).subscribe({
+      next: services => this.servicesWaitingAccess.set(services),
     });
   }
 
@@ -104,6 +112,9 @@ export class ServicesComponent implements OnInit {
   }
 
 
+  // @BUG if the current user has the right to grant access, 
+  // then in the "access requests" tab the new service will not appear, 
+  // for this you need to reload the page. Or implement this by response of server
   /**
    * Click on button for open dialog with request for role
    * 
@@ -118,13 +129,77 @@ export class ServicesComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe(resultDialog => {
-      if (resultDialog == undefined) return;
+      if (resultDialog?.result == undefined) return;
+      if (serviceId == undefined) throw new Error('onBtnClickRequestUserRole: serviceId is undefined');
+      if (resultDialog.result.roleId == undefined) throw new Error('onBtnClickRequestUserRole: userRoleId is undefined');
 
-      // this.departmentService.saveDepartment(resultDialog.result).subscribe({
-      //   next: resultModel => this.pageState.departments.add(resultModel),
-      //   error: (error) => this.showError(error),
-      // });
+      this.servicesServices.sendRequestObtainUserRoleInService(
+        serviceId, this.authService.getUserId(), resultDialog.result.roleId
+      ).subscribe({
+        next: () => {
+          // update the service, set value to service.userRoleNameRequested
+          this.services.update(services =>
+            services.map(service => {
+              if (service.serviceId == serviceId) {
+                const updatedService = service;
+                updatedService.userRoleNameRequested = resultDialog.result && resultDialog.result.roleName || '';
+                return updatedService;
+              }
+              return service;
+            })
+          );
+        },
+        error: (error) => this.showError(error),
+      });
     });
+  }
+
+
+  /**
+   * Click on button for approve access to service
+   * 
+   * @param serviceId 
+   * @param toUserId
+   */
+  onBtnClickApproveAccessToService(serviceId: number | undefined, toUserId: number | undefined) {
+    if (serviceId == undefined) throw new Error('onBtnClickApproveAccessToService: serviceId is undefined');
+    if (toUserId == undefined) throw new Error('onBtnClickApproveAccessToService: userId is undefined');
+
+    this.servicesServices.sendResponseAccessGrantToService(serviceId, this.authService.getUserId(), toUserId, { typeResponseName: 'approved' }).subscribe(
+      {
+        next: () => {
+          this.servicesWaitingAccess.update(
+            (services) =>
+              services.filter(service => service.serviceId != serviceId)
+          );
+        },
+        error: err => this.showError(err),
+      }
+    );
+  }
+
+
+  /**
+ * Click on button for reject access to service
+ * 
+ * @param serviceId 
+ * @param toUserId
+ */
+  onBtnClickRejectAccessToService(serviceId: number | undefined, toUserId: number | undefined) {
+    if (serviceId == undefined) throw new Error('onBtnClickRejectAccessToService: serviceId is undefined');
+    if (toUserId == undefined) throw new Error('onBtnClickRejectAccessToService: userId is undefined');
+
+    this.servicesServices.sendResponseAccessGrantToService(serviceId, this.authService.getUserId(), toUserId, { typeResponseName: 'rejected' }).subscribe(
+      {
+        next: () => {
+          this.servicesWaitingAccess.update(
+            (services) =>
+              services.filter(service => service.serviceId != serviceId)
+          );
+        },
+        error: err => this.showError(err),
+      }
+    );
   }
 
 

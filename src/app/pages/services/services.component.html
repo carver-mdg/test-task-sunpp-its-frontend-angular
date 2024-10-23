@@ -30,15 +30,19 @@
             </div>
             <div>
               @if(service.userRoleNameRequestedStatus.length)
-              {Статус запроса на повышение роли: <span class="text-mark-card">{{service.userRoleNameRequestedStatus}}</span> }
+              {Статус запроса на повышение роли: <span
+                class="text-mark-card">{{service.userRoleNameRequestedStatus}}</span> }
             </div>
           </div>
           <hr class="item-card-divider" />
         </mat-card-content>
         <mat-card-actions>
-          <button mat-raised-button extended (click)="onBtnClickRequestUserRole(service.serviceId)">Запросить
-            роль</button>
-            <button mat-raised-button extended (click)="onBtnClickOpenRequestsHistory(service.serviceId)">История запросов</button>
+          <button mat-raised-button extended (click)="onBtnClickRequestUserRole(service.serviceId)"
+            [disabled]="service.userRoleNameRequested.length > 0">
+            Запросить роль
+          </button>
+          <button mat-raised-button extended (click)="onBtnClickOpenRequestsHistory(service.serviceId)">История
+            запросов</button>
           <button mat-raised-button extended (click)="onBtnClickOpenService(service.serviceId)">Открыть</button>
         </mat-card-actions>
       </mat-card>
@@ -47,8 +51,34 @@
   </mat-tab>
 
   <mat-tab label="Запросы доступа">
-    Сервисы к которым данный пользователь запросил доступ и они ожидают подтверждения пользователей с ролью "owner",
-    "admin"
+    <div class="container-card">
+      @for(service of servicesWaitingAccess(); track $index) {
+      <mat-card class="item-card" appearance="outlined">
+        <mat-card-header>
+          <div mat-card-avatar><i class="material-icons">design_services</i></div>
+          <mat-card-subtitle>{{service.serviceName}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr class="item-card-divider" />
+          <p>
+            Пользователь: <span class="text-mark-card">{{service.userName}}</span>
+          </p>
+          <p>
+            Запрошенная роль: <span class="text-mark-card">{{service.userRoleName}}</span>
+          </p>
+          <hr class="item-card-divider" />
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button extended class="btn-approve" (click)="onBtnClickApproveAccessToService(service.serviceId, service.userId)">
+            Разрешить
+          </button>
+          <button mat-raised-button extended class="btn-reject" (click)="onBtnClickRejectAccessToService(service.serviceId, service.userId)">
+            Отклонить
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      }
+    </div>
   </mat-tab>
 
 </mat-tab-group>
