@@ -126,12 +126,12 @@ export class ServiceSysListComponent {
    * @param userIDs 
    * @returns
    */
-  public getEmployeesFullNamesByUsersIDs(userIDs: number[]): string {
+  public getEmployeesFullNamesWithUserNameByUsersIDs(userIDs: number[]): string {
     return this.pageState.users.data()
       .filter(user => user.userID == userIDs.find(userId => userId == user.userID))
       .map(user =>
         this.pageState.employees.data()
-          .find(employee => employee.employeeID == user.employeeID)?.fullName)
+          .find(employee => employee.employeeID == user.employeeID)?.fullName + ` (${user.userName})`)
       .join(', ');
   }
 
