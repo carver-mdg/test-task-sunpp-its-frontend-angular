@@ -1,5 +1,5 @@
-import { RequestHistoryModel } from "app/models";
+import { HistoryRequestAccessModel } from "app/models";
 
 export interface IDialogRequestHistoryData {
-  data: RequestHistoryModel[];
+  data: HistoryRequestAccessModel[];
 }

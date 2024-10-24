@@ -2,9 +2,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppSettings } from 'app/AppSettings';
 import { AuthService } from 'app/auth/auth.service';
-import { RequestHistoryModel, ResponseRequestObtainUserRoleInServiceModel, ServiceModel, ServiceWaitingAccessModel, UserRoleInServiceModel } from 'app/models';
+import { HistoryRequestAccessModel, ResponseRequestObtainUserRoleInServiceModel, ServiceModel, ServiceWaitingAccessModel, UserRoleInServiceModel } from 'app/models';
 import { map, Observable } from 'rxjs';
-import { CreateResponseRequestObtainUserRoleInServiceRequestDTO, RequestHistoryResponseDTO, ServiceResponseDTO, ServicesWaitingAccessResponseDTO, UserRoleInServiceResponseDTO } from './dto';
+import { CreateResponseRequestObtainUserRoleInServiceRequestDTO, HistoryRequestAccessResponseDTO, ServiceResponseDTO, ServicesWaitingAccessResponseDTO, UserRoleInServiceResponseDTO } from './dto';
 
 @Injectable({
   providedIn: 'root'
@@ -102,13 +102,13 @@ export class ServicesService {
    * @param service_id 
    * @returns 
    */
-  public loadRequestsHistory(service_id: number): Observable<RequestHistoryModel[]> {
+  public loadRequestsHistory(service_id: number): Observable<HistoryRequestAccessModel[]> {
     // @FIXME not released
-    return this.http.get<RequestHistoryResponseDTO[]>(`${this.appSettings.baseUrlAPI}/api/v1/services/${service_id}/history`)
+    return this.http.get<HistoryRequestAccessResponseDTO[]>(`${this.appSettings.baseUrlAPI}/api/v1/services/${service_id}/history`)
       .pipe(map((resultDTO) => {
-        let requestsHistory: RequestHistoryModel[] = [];
+        let requestsHistory: HistoryRequestAccessModel[] = [];
         resultDTO.forEach(itemServiceDTO =>
-          requestsHistory.push(RequestHistoryResponseDTO.toModel(itemServiceDTO))
+          requestsHistory.push(HistoryRequestAccessResponseDTO.toModel(itemServiceDTO))
         )
         return requestsHistory;
       }))
@@ -140,7 +140,7 @@ export class ServicesService {
     let dtoToSending: CreateResponseRequestObtainUserRoleInServiceRequestDTO = {
       typeResponseName: responseOfUser.typeResponseName
     };
-    
+
     return this.http.post<void>(`${this.appSettings.baseUrlAPI}/api/v1/services/${serviceId}/request/obtain/role/users/from/${fromUserId}/to/${toUserId}`, dtoToSending);
   }
 }

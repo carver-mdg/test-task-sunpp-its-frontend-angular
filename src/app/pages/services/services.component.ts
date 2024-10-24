@@ -100,6 +100,7 @@ export class ServicesComponent implements OnInit {
     this.servicesServices.loadRequestsHistory(serviceId).subscribe(
       {
         next: requestsHistoryList => {
+          console.log(requestsHistoryList);
           this.dialog.open<DialogRequestsHistoryComponent, IDialogRequestHistoryData, IDialogRequestHistoryResult>(DialogRequestsHistoryComponent, {
             data: {
               data: requestsHistoryList

@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { IDialogRequestHistoryData, IDialogRequestHistoryResult } from './types';
+import { MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-dialog-requests-history',
@@ -13,6 +14,7 @@ import { IDialogRequestHistoryData, IDialogRequestHistoryResult } from './types'
     MatDialogModule,
     MatDividerModule,
     MatIconModule,
+    MatTableModule,
   ],
   templateUrl: './dialog-requests-history.component.html',
   styleUrl: './dialog-requests-history.component.scss'
@@ -22,6 +24,8 @@ export class DialogRequestsHistoryComponent implements OnInit {
   readonly data = inject<IDialogRequestHistoryData>(MAT_DIALOG_DATA);
   readonly modelDialogData = model(this.data);
   dialogResult?: IDialogRequestHistoryResult = undefined;
+
+  displayedColumns: string[] = ['serviceName', 'requestedRole', 'userNameCustomer', 'userNameGivesAccess', 'statusAccess', 'dateCreated'];
 
 
   /**

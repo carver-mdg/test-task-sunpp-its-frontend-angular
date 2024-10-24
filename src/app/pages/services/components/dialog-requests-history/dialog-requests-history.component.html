@@ -4,6 +4,47 @@
 <mat-divider />
 
 <mat-dialog-content>
+  <table mat-table [dataSource]="modelDialogData().data" class="mat-elevation-z8">
+    <ng-container matColumnDef="serviceName">
+      <th mat-header-cell *matHeaderCellDef> Название сервиса </th>
+      <td mat-cell *matCellDef="let item"> {{item.serviceName}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="requestedRole">
+      <th mat-header-cell *matHeaderCellDef> Запрашиваемая роль </th>
+      <td mat-cell *matCellDef="let item"> {{item.requestedRole}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="userNameCustomer">
+      <th mat-header-cell *matHeaderCellDef> Кто запросил </th>
+      <td mat-cell *matCellDef="let item"> {{item.userNameCustomer}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="userNameGivesAccess">
+      <th mat-header-cell *matHeaderCellDef> Кто ответил </th>
+      <td mat-cell *matCellDef="let item">
+        {{item.userNameGivesAccess}}
+      </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="statusAccess">
+      <th mat-header-cell *matHeaderCellDef> Ответ </th>
+      <td mat-cell *matCellDef="let item">
+        {{item.statusAccess}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateCreated">
+      <th mat-header-cell *matHeaderCellDef> dateCreated </th>
+      <td mat-cell *matCellDef="let item">
+        {{item.dateCreated}}
+      </td>
+    </ng-container>
+
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 </mat-dialog-content>
 <mat-divider />
 

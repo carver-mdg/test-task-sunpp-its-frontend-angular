@@ -7,6 +7,6 @@ export * from './AuthModel';
 
 export * from './ServiceModel';
 export * from './UserRoleInServiceModel';
-export * from './RequestHistoryModel';
+export * from './HistoryRequestAccessModel';
 export * from './ServiceWaitingAccessModel';
 export * from './ResponseRequestObtainUserRoleInServiceModel';
