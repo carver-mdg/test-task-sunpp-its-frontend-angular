@@ -5,18 +5,13 @@
     @if(authService.getUserName() !== undefined) {
     <span>
       Logged as
-      <i><b>{{authService.getUserName()}}</b></i>
+      <span class="auth-name">{{authService.getUserName()}}</span>
     </span>
 
-    <!-- <a class="button" routerLink="/admin-sys" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
-      admin-sys
-    </a>
-    <a class="button" routerLink="/services" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
-      services
-    </a> -->
-    <a class="button" routerLink="/authorization" routerLinkActive="activebutton" ariaCurrentWhenActive="page">
+    <button mat-raised-button extended (click)="authService.signOut()">
+      <i class="material-icons">logout</i>
       signOut
-    </a>
+    </button>
     }
   </mat-toolbar>
   }

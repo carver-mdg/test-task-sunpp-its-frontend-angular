@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppSettings } from 'app/AppSettings';
 import { AuthRequestDTO, AuthResponseDTO } from './dto';
 import { AuthModel } from 'app/models';
+import { map, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private auth: AuthModel = new AuthModel();
+  private auth: AuthModel | undefined = new AuthModel();
 
 
   /**
@@ -18,8 +20,15 @@ export class AuthService {
    */
   constructor(
     private http: HttpClient,
-    private appSettings: AppSettings
-  ) { }
+    private appSettings: AppSettings,
+    private router: Router,
+  ) {
+    // console.log(localStorage.getItem("auth"));
+    let authJson = localStorage.getItem("auth");
+    if (authJson == undefined) this.auth = undefined;
+    else this.auth = JSON.parse(authJson)
+    // this.auth = JSON.parse(localStorage.getItem("auth") || '""') || undefined;
+  }
 
 
   /**
@@ -51,9 +60,13 @@ export class AuthService {
 
 
   /**
-   * 
+   * Sign out of user
    */
-  signOut() { }
+  signOut() {
+    this.auth = undefined;
+    localStorage.removeItem('auth');
+    this.router.navigate(['authorization']);
+  }
 
 
   /**
@@ -61,9 +74,10 @@ export class AuthService {
    */
   check(
     onSuccessFn: Function = (isLogged: boolean) => { },
-    onErrorFn: Function = (error: any) => { }) {
+    onErrorFn: Function = (error: any) => { }
+  ) {
 
-      // this.auth = JSON.parse(localStorage.getItem('auth')) as AuthModel;
+    if (this.auth == undefined) return of(false);
 
     let dtoToSending: AuthRequestDTO = {
       userName: this.auth.userName,
@@ -75,11 +89,52 @@ export class AuthService {
 
 
   /**
+   * Check have user access to service or not.
+   */
+  isHasAccessUserToService(service_id: number) {
+    let options = {
+      headers: new HttpHeaders({
+        'Accept': 'text/plain'
+      }),
+      'responseType': 'text' as 'json'
+    }
+
+    // @NOTE To simplify the task, i'm use this url, maybe in a real application it is better use another url
+    return this.http.get<string>(`${this.appSettings.baseUrlAPI}/api/v1/services/${service_id}/users/${this.auth?.userId}`, options)
+      .pipe(map(res => {
+        if (res) return true
+        return false;
+      }));
+  }
+
+
+  /**
    * 
    * @returns 
    */
-  getUserRole(): string {
+  getUserRoleId(): number {
+    if (this.auth == undefined) throw new Error('auth is undefined');
+    return this.auth.userRoleId;
+  }
+
+
+  /**
+   * 
+   * @returns 
+   */
+  getUserRoleName(): string {
+    if (this.auth == undefined) throw new Error('auth is undefined');
     return this.auth.userRoleName;
+  }
+
+
+  /**
+ * 
+ * @returns 
+ */
+  getUserId(): number {
+    if (this.auth == undefined) throw new Error('auth is undefined');
+    return this.auth.userId;
   }
 
 
@@ -88,6 +143,8 @@ export class AuthService {
    * @returns 
    */
   getUserName(): string {
+    // if (this.auth == undefined) throw new Error('auth is undefined');
+    if (this.auth == undefined) return "";
     return this.auth.userName;
   }
 }

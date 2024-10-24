@@ -1,11 +1,84 @@
 <mat-tab-group dynamicHeight>
-  <mat-tab label="Разрешенные сервисы"> 
-    Сервисы к которым у данного пользователя есть доступ и его роль в них "user"
+
+  <mat-tab label=" Сервисы">
+    <div class="container-card">
+      @for(service of services(); track $index) {
+      <mat-card class="item-card" appearance="outlined">
+        <mat-card-header>
+          <div mat-card-avatar><i class="material-icons">design_services</i></div>
+          <mat-card-subtitle>{{service.serviceName}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr class="item-card-divider" />
+          <p>
+            {{service.serviceDesc}}
+          </p>
+          <hr class="item-card-divider" />
+          <div class="text-muted-item-card">
+            <div>
+              Доступ:
+              @if(service.isHasAccess) { <span class="access-allowed">разрешен</span> }
+              @else { <span class="access-denied">запрещён</span> }
+            </div>
+            <div>
+              @if(service.userRoleName.length)
+              {Роль: <span class="text-mark-card">{{service.userRoleName}}</span>}
+            </div>
+            <div>
+              @if(service.userRoleNameRequested.length)
+              {Запрошенная роль: <span class="text-mark-card">{{service.userRoleNameRequested}}</span> }
+            </div>
+            <div>
+              @if(service.userRoleNameRequestedStatus.length)
+              {Статус запроса на повышение роли: <span
+                class="text-mark-card">{{service.userRoleNameRequestedStatus}}</span> }
+            </div>
+          </div>
+          <hr class="item-card-divider" />
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button extended (click)="onBtnClickRequestUserRole(service.serviceId)"
+            [disabled]="service.userRoleNameRequested.length > 0">
+            Запросить роль
+          </button>
+          <button mat-raised-button extended (click)="onBtnClickOpenRequestsHistory(service.serviceId)">История
+            запросов</button>
+          <button mat-raised-button extended (click)="onBtnClickOpenService(service.serviceId)">Открыть</button>
+        </mat-card-actions>
+      </mat-card>
+      }
+    </div>
   </mat-tab>
-  <mat-tab label="Запрошенные сервисы"> 
-    Сервисы к которым данный пользователь запросил доступ и они ожидают подтверждения пользователей с ролью "owner", "admin"
+
+  <mat-tab label="Запросы доступа">
+    <div class="container-card">
+      @for(service of servicesWaitingAccess(); track $index) {
+      <mat-card class="item-card" appearance="outlined">
+        <mat-card-header>
+          <div mat-card-avatar><i class="material-icons">design_services</i></div>
+          <mat-card-subtitle>{{service.serviceName}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <hr class="item-card-divider" />
+          <p>
+            Пользователь: <span class="text-mark-card">{{service.userName}}</span>
+          </p>
+          <p>
+            Запрошенная роль: <span class="text-mark-card">{{service.userRoleName}}</span>
+          </p>
+          <hr class="item-card-divider" />
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button extended class="btn-approve" (click)="onBtnClickApproveAccessToService(service.serviceId, service.userId)">
+            Разрешить
+          </button>
+          <button mat-raised-button extended class="btn-reject" (click)="onBtnClickRejectAccessToService(service.serviceId, service.userId)">
+            Отклонить
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      }
+    </div>
   </mat-tab>
-  <mat-tab label="Мои сервисы"> 
-    Сервисы в которых данный пользователь владелец или админ и ожидающие его разрешения для других пользователей
-  </mat-tab>
+
 </mat-tab-group>
