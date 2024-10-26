@@ -70,7 +70,7 @@ export class StaffUnitDialogComponent implements OnInit {
     // Set init value to field department
     this.formControlDepartment.setValue(
       this.departments.data().find(
-        item => item.departmentID == this.modelDialogData().data.departmentID
+        item => item.departmentId == this.modelDialogData().data.departmentId
       )
     );
   }
@@ -108,9 +108,9 @@ export class StaffUnitDialogComponent implements OnInit {
 
     this.dialogResult = {
       result: {
-        staffUnitID: this.modelDialogData().data.staffUnitID,
+        staffUnitId: this.modelDialogData().data.staffUnitId,
         staffUnitName: this.formControlStaffUnit.value ?? '',
-        departmentID: this.formControlDepartment.value?.departmentID,
+        departmentId: this.formControlDepartment.value?.departmentId,
       }
     };
     this.dialogRef.close(this.dialogResult);

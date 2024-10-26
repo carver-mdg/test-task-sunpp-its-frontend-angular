@@ -35,9 +35,9 @@ export class DepartmentsState {
  */
   update(department: DepartmentModel) {
     this.data.set([...this.data().map(itemDepartment => {
-      if (itemDepartment.departmentID == department.departmentID) {
+      if (itemDepartment.departmentId == department.departmentId) {
         return {
-          departmentID: department.departmentID,
+          departmentId: department.departmentId,
           departmentName: department.departmentName
         }
       }
@@ -52,7 +52,7 @@ export class DepartmentsState {
    */
   delete(department: DepartmentModel) {
     this.data.set([...this.data().filter(itemDepartment =>
-      itemDepartment.departmentID != department.departmentID
+      itemDepartment.departmentId != department.departmentId
     )]);
   }
 }

@@ -26,7 +26,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
   styleUrl: './department-list.component.scss'
 })
 export class DepartmentListComponent {
-  displayedColumns: string[] = ['departmentID', 'departmentName', 'actions'];
+  displayedColumns: string[] = ['departmentId', 'departmentName', 'actions'];
 
 
   /**
@@ -49,7 +49,7 @@ export class DepartmentListComponent {
       = this.dialog.open<DepartmentDialogComponent, IDialogDepartmentData, IDialogDepartmentResult>(DepartmentDialogComponent, {
         data: {
           dialogType: 'update',
-          data: { departmentID: department.departmentID, departmentName: department.departmentName }
+          data: { departmentId: department.departmentId, departmentName: department.departmentName }
         },
       });
 
@@ -79,9 +79,9 @@ export class DepartmentListComponent {
 
     dialogRef.afterClosed().subscribe(resultDialog => {
       if (resultDialog?.result == 'yes') {
-        if (department.departmentID == undefined) throw new Error('departmentID is undefined');
+        if (department.departmentId == undefined) throw new Error('departmentID is undefined');
 
-        this.departmentService.deleteDepartment(department.departmentID).subscribe({
+        this.departmentService.deleteDepartment(department.departmentId).subscribe({
           next: () => this.pageState.departments.delete(department),
           error: (error) => this.showError(error),
         });

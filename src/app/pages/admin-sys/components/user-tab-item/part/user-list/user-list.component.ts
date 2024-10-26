@@ -26,7 +26,7 @@ import { UserService } from 'app/pages/admin-sys/services';
   styleUrl: './user-list.component.scss'
 })
 export class UserListComponent {
-  displayedColumns: string[] = ['userID', 'userName', 'employeeID', 'actions'];
+  displayedColumns: string[] = ['userId', 'userName', 'employeeId', 'actions'];
 
   /**
    * 
@@ -49,7 +49,7 @@ export class UserListComponent {
       = this.dialog.open<UserDialogComponent, IDialogUserData, IDialogUserResult>(UserDialogComponent, {
         data: {
           dialogType: 'update',
-          data: { userID: user.userID, userName: user.userName, employeeID: user.employeeID }
+          data: { userId: user.userId, userName: user.userName, employeeId: user.employeeId }
         },
       });
 
@@ -81,9 +81,9 @@ export class UserListComponent {
 
     dialogRef.afterClosed().subscribe(resultDialog => {
       if (resultDialog?.result == 'yes') {
-        if (user.userID == undefined) throw new Error('userID is undefined');
+        if (user.userId == undefined) throw new Error('userID is undefined');
 
-        this.userService.delete(user.userID).subscribe({
+        this.userService.delete(user.userId).subscribe({
           next: () => this.pageState.users.delete(user),
           error: (error) => this.showError(error),
         });
@@ -116,10 +116,10 @@ export class UserListComponent {
   /**
    * Get name of employee by it ID. For viewed in html template
    * 
-   * @param employeeID 
+   * @param employeeId 
    * @returns 
    */
-  getEmployeeFullNameByID(employeeID: number) {
-    return this.pageState.employees.data().find(item => item.employeeID == employeeID)?.fullName
+  getEmployeeFullNameById(employeeId: number) {
+    return this.pageState.employees.data().find(item => item.employeeId == employeeId)?.fullName
   }
 }

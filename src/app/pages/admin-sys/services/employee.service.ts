@@ -41,12 +41,12 @@ export class EmployeeService {
    * @returns model received from server
    */
   public save(employee: EmployeeModel): Observable<EmployeeModel> {
-    if (employee.staffUnitID == undefined)
-      return throwError(() => new Error('staffUnitID is undefined'));
+    if (employee.staffUnitId == undefined)
+      return throwError(() => new Error('staffUnitId is undefined'));
 
     let dtoToSending: CreateEmployeeRequestDTO = {
       fullName: employee.fullName,
-      staffUnitID: employee.staffUnitID
+      staffUnitId: employee.staffUnitId
     }
 
     return this.http.post<EmployeeResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/employees/`, dtoToSending).
@@ -61,18 +61,18 @@ export class EmployeeService {
    * @returns model received from server
    */
   public update(employee: EmployeeModel): Observable<EmployeeModel> {
-    if (employee.employeeID == undefined)
-      return throwError(() => new Error('employeeID is undefined'));
-    if (employee.staffUnitID == undefined)
-      return throwError(() => new Error('staffUnitID is undefined'));
+    if (employee.employeeId == undefined)
+      return throwError(() => new Error('employeeId is undefined'));
+    if (employee.staffUnitId == undefined)
+      return throwError(() => new Error('staffUnitId is undefined'));
 
     let dtoToSending: UpdateEmployeeRequestDTO = {
-      employeeID: employee.employeeID,
+      employeeId: employee.employeeId,
       fullName: employee.fullName,
-      staffUnitID: employee.staffUnitID
+      staffUnitId: employee.staffUnitId
     }
 
-    return this.http.put<EmployeeResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/employees/${employee.employeeID}`, dtoToSending).
+    return this.http.put<EmployeeResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/employees/${employee.employeeId}`, dtoToSending).
       pipe(map(responseDTO => EmployeeResponseDTO.toModel(responseDTO)));
   }
 

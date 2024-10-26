@@ -72,7 +72,7 @@ export class UserDialogComponent implements OnInit {
     // Set init value to field employee
     this.formControlEmployee.setValue(
       this.pageState.employees.data().find(
-        item => item.employeeID == this.modelDialogData().data.employeeID
+        item => item.employeeId == this.modelDialogData().data.employeeId
       )
     );
   }
@@ -110,9 +110,9 @@ export class UserDialogComponent implements OnInit {
 
     this.dialogResult = {
       result: {
-        userID: this.modelDialogData().data.userID,
+        userId: this.modelDialogData().data.userId,
         userName: this.formControlUserUserName.value ?? '',
-        employeeID: this.formControlEmployee.value?.employeeID,
+        employeeId: this.formControlEmployee.value?.employeeId,
       }
     };
     this.dialogRef.close(this.dialogResult);

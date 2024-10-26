@@ -37,11 +37,11 @@ export class UsersState {
  */
   update(user: UserModel) {
     this.data.set([...this.data().map(itemUser => {
-      if (itemUser.userID == user.userID) {
+      if (itemUser.userId == user.userId) {
         return {
-          userID: user.userID,
+          userId: user.userId,
           userName: user.userName,
-          employeeID: user.employeeID
+          employeeId: user.employeeId
         }
       }
       return itemUser;
@@ -56,7 +56,7 @@ export class UsersState {
    */
   delete(user: UserModel) {
     this.data.set([...this.data().filter(itemUser =>
-      itemUser.userID != user.userID
+      itemUser.userId != user.userId
     )]);
   }
 }

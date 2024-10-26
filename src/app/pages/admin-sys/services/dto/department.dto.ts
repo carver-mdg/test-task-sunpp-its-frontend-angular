@@ -5,12 +5,12 @@ import { DepartmentModel } from "app/models";
  * Response from server
  */
 export class DepartmentResponseDTO {
-  departmentID!: number;
+  departmentId!: number;
   departmentName!: string;
 
   static toModel(dto: DepartmentResponseDTO): DepartmentModel {
     return {
-      departmentID: dto.departmentID,
+      departmentId: dto.departmentId,
       departmentName: dto.departmentName
     }
   }
@@ -24,7 +24,7 @@ export class CreateDepartmentRequestDTO {
 
   static toModel(dto: CreateDepartmentRequestDTO): DepartmentModel {
     return {
-      departmentID: undefined,
+      departmentId: undefined,
       departmentName: dto.departmentName
     }
   }
@@ -34,11 +34,11 @@ export class CreateDepartmentRequestDTO {
  * DTO for sending to server for update
  */
 export class UpdateDepartmentRequestDTO extends CreateDepartmentRequestDTO {
-  departmentID!: number;
+  departmentId!: number;
 
   static override toModel(dto: UpdateDepartmentRequestDTO): DepartmentModel {
     let response = super.toModel(dto);
-    response.departmentID = dto.departmentID;
+    response.departmentId = dto.departmentId;
     return response;
   }
 }

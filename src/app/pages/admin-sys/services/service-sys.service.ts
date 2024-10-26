@@ -67,7 +67,7 @@ export class ServiceSysService {
    */
   public update(service: ServiceSysModel): Observable<ServiceSysModel> {
     if (service.serviceId == undefined)
-      return throwError(() => new Error('serviceID is undefined'));
+      return throwError(() => new Error('serviceId is undefined'));
     if (service.usersIdsAsRoleOwner == undefined || service.usersIdsAsRoleOwner.length === 0)
       return throwError(() => new Error('usersOwnerIDs is undefined or array is empty'));
     if (service.usersIdsAsRoleAdmin == undefined || service.usersIdsAsRoleAdmin.length === 0)

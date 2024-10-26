@@ -26,7 +26,7 @@ import { IDialogServiceSysData, IDialogServiceSysResult } from '../service-sys-d
   styleUrl: './service-sys-list.component.scss'
 })
 export class ServiceSysListComponent {
-  displayedColumns: string[] = ['serviceID', 'serviceName', 'serviceDesc', 'owner', 'admin', 'actions'];
+  displayedColumns: string[] = ['serviceId', 'serviceName', 'serviceDesc', 'owner', 'admin', 'actions'];
 
   /**
    * 
@@ -128,10 +128,10 @@ export class ServiceSysListComponent {
    */
   public getEmployeesFullNamesWithUserNameByUsersIDs(userIDs: number[]): string {
     return this.pageState.users.data()
-      .filter(user => user.userID == userIDs.find(userId => userId == user.userID))
+      .filter(user => user.userId == userIDs.find(userId => userId == user.userId))
       .map(user =>
         this.pageState.employees.data()
-          .find(employee => employee.employeeID == user.employeeID)?.fullName + ` (${user.userName})`)
+          .find(employee => employee.employeeId == user.employeeId)?.fullName + ` (${user.userName})`)
       .join(', ');
   }
 
@@ -144,7 +144,7 @@ export class ServiceSysListComponent {
    */
   public getUserNamesByUsersIDs(userIDs: number[]): string {
     return this.pageState.users.data()
-      .filter(user => user.userID == userIDs.find(userId => userId == user.userID))
+      .filter(user => user.userId == userIDs.find(userId => userId == user.userId))
       .map(user => user.userName)
       .join(', ');
   }

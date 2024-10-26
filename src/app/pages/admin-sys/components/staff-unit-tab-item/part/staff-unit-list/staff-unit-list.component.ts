@@ -26,7 +26,7 @@ import { IDialogStaffUnitData, IDialogStaffUnitResult } from '../staff-unit-dial
   styleUrl: './staff-unit-list.component.scss'
 })
 export class StaffUnitListComponent {
-  displayedColumns: string[] = ['staffUnitID', 'staffUnitName', 'departmentID', 'actions'];
+  displayedColumns: string[] = ['staffUnitId', 'staffUnitName', 'departmentId', 'actions'];
 
   /**
    * 
@@ -49,7 +49,7 @@ export class StaffUnitListComponent {
       = this.dialog.open<StaffUnitDialogComponent, IDialogStaffUnitData, IDialogStaffUnitResult>(StaffUnitDialogComponent, {
         data: {
           dialogType: 'update',
-          data: { staffUnitID: staffUnit.staffUnitID, staffUnitName: staffUnit.staffUnitName, departmentID: staffUnit.departmentID }
+          data: { staffUnitId: staffUnit.staffUnitId, staffUnitName: staffUnit.staffUnitName, departmentId: staffUnit.departmentId }
         },
       });
 
@@ -81,9 +81,9 @@ export class StaffUnitListComponent {
 
     dialogRef.afterClosed().subscribe(resultDialog => {
       if (resultDialog?.result == 'yes') {
-        if (staffUnit.staffUnitID == undefined) throw new Error('staffUnitID is undefined');
+        if (staffUnit.staffUnitId == undefined) throw new Error('staffUnitID is undefined');
 
-        this.staffUnitService.delete(staffUnit.staffUnitID).subscribe({
+        this.staffUnitService.delete(staffUnit.staffUnitId).subscribe({
           next: () => this.pageState.staffUnits.delete(staffUnit),
           error: (error) => this.showError(error),
         });
@@ -116,10 +116,10 @@ export class StaffUnitListComponent {
   /**
    * Get name of department by it ID. For viewed in html template
    * 
-   * @param departmentID 
+   * @param departmentId 
    * @returns 
    */
-  getDepartmentByID(departmentID: number) {
-    return this.pageState.departments.data().find(item => item.departmentID == departmentID)?.departmentName
+  getDepartmentById(departmentId: number) {
+    return this.pageState.departments.data().find(item => item.departmentId == departmentId)?.departmentName
   }
 }

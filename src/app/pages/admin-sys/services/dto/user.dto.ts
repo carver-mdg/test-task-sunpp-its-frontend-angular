@@ -5,15 +5,15 @@ import { UserModel } from "app/models";
  * Response from server
  */
 export class UserResponseDTO {
-  userID!: number;
+  userId!: number;
   userName!: string;
-  employeeID!: number;
+  employeeId!: number;
 
   static toModel(dto: UserResponseDTO): UserModel {
     return {
-      userID: dto.userID,
+      userId: dto.userId,
       userName: dto.userName,
-      employeeID: dto.employeeID,
+      employeeId: dto.employeeId,
     }
   }
 }
@@ -23,13 +23,13 @@ export class UserResponseDTO {
  */
 export class CreateUserRequestDTO {
   userName!: string;
-  employeeID!: number;
+  employeeId!: number;
 
   static toModel(dto: CreateUserRequestDTO): UserModel {
     return {
-      userID: undefined,
+      userId: undefined,
       userName: dto.userName,
-      employeeID: dto.employeeID
+      employeeId: dto.employeeId
     }
   }
 }
@@ -38,11 +38,11 @@ export class CreateUserRequestDTO {
  * DTO for sending to server for update
  */
 export class UpdateUserRequestDTO extends CreateUserRequestDTO {
-  userID!: number;
+  userId!: number;
 
   static override toModel(dto: UpdateUserRequestDTO): UserModel {
     let response = super.toModel(dto);
-    response.userID = dto.userID;
+    response.userId = dto.userId;
     return response;
   }
 }

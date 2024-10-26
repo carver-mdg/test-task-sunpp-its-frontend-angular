@@ -36,11 +36,11 @@ export class StaffUnitsState {
  */
   update(staffUnit: StaffUnitModel) {
     this.data.set([...this.data().map(itemStaffUnit => {
-      if (itemStaffUnit.staffUnitID == staffUnit.staffUnitID) {
+      if (itemStaffUnit.staffUnitId == staffUnit.staffUnitId) {
         return {
-          staffUnitID: staffUnit.staffUnitID,
+          staffUnitId: staffUnit.staffUnitId,
           staffUnitName: staffUnit.staffUnitName,
-          departmentID: staffUnit.departmentID
+          departmentId: staffUnit.departmentId
         }
       }
       return itemStaffUnit;
@@ -54,7 +54,7 @@ export class StaffUnitsState {
    */
   delete(staffUnit: StaffUnitModel) {
     this.data.set([...this.data().filter(itemStaffUnit =>
-      itemStaffUnit.staffUnitID != staffUnit.staffUnitID
+      itemStaffUnit.staffUnitId != staffUnit.staffUnitId
     )]);
   }
 }

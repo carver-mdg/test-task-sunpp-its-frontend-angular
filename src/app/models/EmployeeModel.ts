@@ -1,5 +1,5 @@
 export class EmployeeModel {
-  employeeID: number | undefined;
+  employeeId: number | undefined;
   fullName: string = '';
-  staffUnitID: number | undefined;
+  staffUnitId: number | undefined;
 }

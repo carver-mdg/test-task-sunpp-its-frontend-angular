@@ -70,7 +70,7 @@ export class EmployeeDialogComponent implements OnInit {
     // Set init value to field staff unit
     this.formControlStaffUnit.setValue(
       this.pageState.staffUnits.data().find(
-        item => item.staffUnitID == this.modelDialogData().data.staffUnitID
+        item => item.staffUnitId == this.modelDialogData().data.staffUnitId
       )
     );
   }
@@ -108,9 +108,9 @@ export class EmployeeDialogComponent implements OnInit {
 
     this.dialogResult = {
       result: {
-        employeeID: this.modelDialogData().data.employeeID,
+        employeeId: this.modelDialogData().data.employeeId,
         fullName: this.formControlEmployeeFullName.value ?? '',
-        staffUnitID: this.formControlStaffUnit.value?.staffUnitID,
+        staffUnitId: this.formControlStaffUnit.value?.staffUnitId,
       }
     };
     this.dialogRef.close(this.dialogResult);
@@ -176,7 +176,7 @@ export class EmployeeDialogComponent implements OnInit {
   */
   getDepartmentNameByStaffUnit(staffUnit: StaffUnitModel) {
     return this.pageState.departments.data().find(
-      departmentItem => departmentItem.departmentID == staffUnit.departmentID
+      departmentItem => departmentItem.departmentId == staffUnit.departmentId
     )?.departmentName;
   }
 }

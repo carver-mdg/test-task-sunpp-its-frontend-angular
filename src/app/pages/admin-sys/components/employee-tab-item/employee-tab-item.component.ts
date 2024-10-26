@@ -49,7 +49,7 @@ export class EmployeeTabItemComponent {
       = this.dialog.open<EmployeeDialogComponent, IDialogEmployeeData, IDialogEmployeeResult>(EmployeeDialogComponent, {
         data: {
           dialogType: 'create',
-          data: { employeeID: undefined, fullName: '', staffUnitID: undefined },
+          data: { employeeId: undefined, fullName: '', staffUnitId: undefined },
         },
       });
 

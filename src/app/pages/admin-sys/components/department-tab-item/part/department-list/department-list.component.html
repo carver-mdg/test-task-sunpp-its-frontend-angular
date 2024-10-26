@@ -27,9 +27,9 @@
 }
 @if(pageState.departments.loadingState().isCompleted && pageState.departments.data().length) {
 <table mat-table [dataSource]="pageState.departments.data()" class="mat-elevation-z8">
-  <ng-container matColumnDef="departmentID">
+  <ng-container matColumnDef="departmentId">
     <th mat-header-cell *matHeaderCellDef> ID </th>
-    <td mat-cell *matCellDef="let department"> {{department.departmentID}} </td>
+    <td mat-cell *matCellDef="let department"> {{department.departmentId}} </td>
   </ng-container>
 
   <ng-container matColumnDef="departmentName">

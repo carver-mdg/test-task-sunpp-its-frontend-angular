@@ -1,4 +1,4 @@
 export class DepartmentModel {
-  departmentID: number | undefined;
+  departmentId: number | undefined;
   departmentName: string = '';
 }

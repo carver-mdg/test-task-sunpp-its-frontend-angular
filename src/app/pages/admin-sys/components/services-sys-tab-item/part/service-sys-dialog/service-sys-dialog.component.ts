@@ -158,7 +158,7 @@ export class ServiceSysDialogComponent implements OnInit {
    */
   private addUserToSelectedList(selectedUsers: WritableSignal<UserModel[]>, user: UserModel): void {
     selectedUsers.update(usersAdmin => [...usersAdmin, user]);
-    this.usersPossibleToSelect.set([...this.usersPossibleToSelect().filter(userItem => userItem.userID != user.userID)]);
+    this.usersPossibleToSelect.set([...this.usersPossibleToSelect().filter(userItem => userItem.userId != user.userId)]);
   }
 
 
@@ -170,7 +170,7 @@ export class ServiceSysDialogComponent implements OnInit {
  * @param user user to remove
  */
   private removeUserFromSelectedList(selectedUsers: WritableSignal<UserModel[]>, user: UserModel): void {
-    selectedUsers.set([...selectedUsers().filter(userItem => userItem.userID !== user.userID)]);
+    selectedUsers.set([...selectedUsers().filter(userItem => userItem.userId !== user.userId)]);
     this.usersPossibleToSelect.set([...this.usersPossibleToSelect(), user]);
   }
 
@@ -188,7 +188,7 @@ export class ServiceSysDialogComponent implements OnInit {
       userId => this.addUserToSelectedList(
         this.selectedUsersOwner,
         (() => {
-          const userFindedId = this.pageState.users.data().find(user => user.userID == userId);
+          const userFindedId = this.pageState.users.data().find(user => user.userId == userId);
           if (userFindedId == undefined) throw new Error('ServiceSysDialog: userFindedId is undefined');
           return userFindedId;
         })()
@@ -200,7 +200,7 @@ export class ServiceSysDialogComponent implements OnInit {
       userId => this.addUserToSelectedList(
         this.selectedUsersAdmin,
         (() => {
-          const userFindedId = this.pageState.users.data().find(user => user.userID == userId);
+          const userFindedId = this.pageState.users.data().find(user => user.userId == userId);
           if (userFindedId == undefined) throw new Error('ServiceSysDialog: userFindedId is undefined');
           return userFindedId;
         })()
@@ -222,11 +222,11 @@ export class ServiceSysDialogComponent implements OnInit {
         serviceDesc: this.formControlServiceSysDesc.value ?? '',
         usersIdsAsRoleUser: [],
         usersIdsAsRoleOwner: [...this.selectedUsersOwner()
-          .map(userItem => userItem.userID)
+          .map(userItem => userItem.userId)
           .filter(userItem => userItem != undefined)
         ],
         usersIdsAsRoleAdmin: [...this.selectedUsersAdmin()
-          .map(userItem => userItem.userID)
+          .map(userItem => userItem.userId)
           .filter(userItem => userItem != undefined)
         ]
       }
@@ -330,6 +330,6 @@ export class ServiceSysDialogComponent implements OnInit {
    * @returns {string | undefined} Full name of employee
    */
   getEmployeeFullNameByUser(user: UserModel): string | undefined {
-    return this.pageState.employees.data().find(employee => employee.employeeID === user.employeeID)?.fullName;
+    return this.pageState.employees.data().find(employee => employee.employeeId === user.employeeId)?.fullName;
   }
 }

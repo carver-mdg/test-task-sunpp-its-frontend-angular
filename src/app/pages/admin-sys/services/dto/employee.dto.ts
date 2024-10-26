@@ -5,15 +5,15 @@ import { EmployeeModel } from "app/models";
  * Response from server
  */
 export class EmployeeResponseDTO {
-  employeeID!: number;
+  employeeId!: number;
   fullName!: string;
-  staffUnitID!: number;
+  staffUnitId!: number;
 
   static toModel(dto: EmployeeResponseDTO): EmployeeModel {
     return {
-      employeeID: dto.employeeID,
+      employeeId: dto.employeeId,
       fullName: dto.fullName,
-      staffUnitID: dto.staffUnitID,
+      staffUnitId: dto.staffUnitId,
     }
   }
 }
@@ -23,13 +23,13 @@ export class EmployeeResponseDTO {
  */
 export class CreateEmployeeRequestDTO {
   fullName!: string;
-  staffUnitID!: number;
+  staffUnitId!: number;
 
   static toModel(dto: CreateEmployeeRequestDTO): EmployeeModel {
     return {
-      employeeID: undefined,
+      employeeId: undefined,
       fullName: dto.fullName,
-      staffUnitID: dto.staffUnitID
+      staffUnitId: dto.staffUnitId
     }
   }
 }
@@ -38,11 +38,11 @@ export class CreateEmployeeRequestDTO {
  * DTO for sending to server for update
  */
 export class UpdateEmployeeRequestDTO extends CreateEmployeeRequestDTO {
-  employeeID!: number;
+  employeeId!: number;
 
   static override toModel(dto: UpdateEmployeeRequestDTO): EmployeeModel {
     let response = super.toModel(dto);
-    response.employeeID = dto.employeeID;
+    response.employeeId = dto.employeeId;
     return response;
   }
 }

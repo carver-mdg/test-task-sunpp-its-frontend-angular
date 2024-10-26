@@ -26,7 +26,7 @@ import { IDialogEmployeeData, IDialogEmployeeResult } from '../employee-dialog/t
   styleUrl: './employee-list.component.scss'
 })
 export class EmployeeListComponent {
-  displayedColumns: string[] = ['employeeID', 'fullName', 'staffUnitID', 'actions'];
+  displayedColumns: string[] = ['employeeId', 'fullName', 'staffUnitId', 'actions'];
 
   /**
    * 
@@ -49,7 +49,7 @@ export class EmployeeListComponent {
       = this.dialog.open<EmployeeDialogComponent, IDialogEmployeeData, IDialogEmployeeResult>(EmployeeDialogComponent, {
         data: {
           dialogType: 'update',
-          data: { employeeID: employee.employeeID, fullName: employee.fullName, staffUnitID: employee.staffUnitID }
+          data: { employeeId: employee.employeeId, fullName: employee.fullName, staffUnitId: employee.staffUnitId }
         },
       });
 
@@ -81,9 +81,9 @@ export class EmployeeListComponent {
 
     dialogRef.afterClosed().subscribe(resultDialog => {
       if (resultDialog?.result == 'yes') {
-        if (employee.employeeID == undefined) throw new Error('employeeID is undefined');
+        if (employee.employeeId == undefined) throw new Error('employeeID is undefined');
 
-        this.employeeService.delete(employee.employeeID).subscribe({
+        this.employeeService.delete(employee.employeeId).subscribe({
           next: () => this.pageState.employees.delete(employee),
           error: (error) => this.showError(error),
         });
@@ -116,11 +116,11 @@ export class EmployeeListComponent {
   /**
    * Get name of staff unit by it ID. For viewed in html template
    * 
-   * @param staffUnitID 
+   * @param staffUnitId 
    * @returns 
    */
-  getStaffUnitByID(staffUnitID: number) {
-    return this.pageState.staffUnits.data().find(item => item.staffUnitID == staffUnitID)?.staffUnitName
+  getStaffUnitById(staffUnitId: number) {
+    return this.pageState.staffUnits.data().find(item => item.staffUnitId == staffUnitId)?.staffUnitName
   }
 
 
@@ -130,11 +130,11 @@ export class EmployeeListComponent {
   * @param staffUnit 
   * @returns 
   */
-  getDepartmentNameByStaffUnit(staffUnitID: number) {
+  getDepartmentNameByStaffUnit(staffUnitId: number) {
     return this.pageState.departments.data().find(
-      departmentItem => departmentItem.departmentID == this.pageState.staffUnits.data().find(
-        item => item.staffUnitID == staffUnitID
-      )?.departmentID
+      departmentItem => departmentItem.departmentId == this.pageState.staffUnits.data().find(
+        item => item.staffUnitId == staffUnitId
+      )?.departmentId
     )?.departmentName;
   }
 }

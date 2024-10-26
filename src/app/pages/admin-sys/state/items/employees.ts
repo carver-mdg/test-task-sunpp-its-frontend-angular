@@ -37,11 +37,11 @@ export class EmployeesState {
  */
   update(employee: EmployeeModel) {
     this.data.set([...this.data().map(itemEmployee => {
-      if (itemEmployee.employeeID == employee.employeeID) {
+      if (itemEmployee.employeeId == employee.employeeId) {
         return {
-          employeeID: employee.employeeID,
+          employeeId: employee.employeeId,
           fullName: employee.fullName,
-          staffUnitID: employee.staffUnitID
+          staffUnitId: employee.staffUnitId
         }
       }
       return itemEmployee;
@@ -56,7 +56,7 @@ export class EmployeesState {
    */
   delete(employee: EmployeeModel) {
     this.data.set([...this.data().filter(itemEmployee =>
-      itemEmployee.employeeID != employee.employeeID
+      itemEmployee.employeeId != employee.employeeId
     )]);
   }
 }

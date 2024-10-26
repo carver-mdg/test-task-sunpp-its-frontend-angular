@@ -60,7 +60,7 @@ export class DepartmentDialogComponent implements OnInit {
 
     this.dialogResult = {
       result: {
-        departmentID: this.modelDialogData().data.departmentID,
+        departmentId: this.modelDialogData().data.departmentId,
         departmentName: departmentName
       }
     };

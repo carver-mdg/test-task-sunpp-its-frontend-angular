@@ -41,12 +41,12 @@ export class UserService {
    * @returns model received from server
    */
   public save(user: UserModel): Observable<UserModel> {
-    if (user.employeeID == undefined)
-      return throwError(() => new Error('employeeID is undefined'));
+    if (user.employeeId == undefined)
+      return throwError(() => new Error('employeeId is undefined'));
 
     let dtoToSending: CreateUserRequestDTO = {
       userName: user.userName,
-      employeeID: user.employeeID
+      employeeId: user.employeeId
     }
 
     return this.http.post<UserResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/users/`, dtoToSending).
@@ -61,18 +61,18 @@ export class UserService {
    * @returns model received from server
    */
   public update(user: UserModel): Observable<UserModel> {
-    if (user.userID == undefined)
-      return throwError(() => new Error('userID is undefined'));
-    if (user.employeeID == undefined)
-      return throwError(() => new Error('employeeID is undefined'));
+    if (user.userId == undefined)
+      return throwError(() => new Error('userId is undefined'));
+    if (user.employeeId == undefined)
+      return throwError(() => new Error('employeeId is undefined'));
 
     let dtoToSending: UpdateUserRequestDTO = {
-      userID: user.userID,
+      userId: user.userId,
       userName: user.userName,
-      employeeID: user.employeeID
+      employeeId: user.employeeId
     }
 
-    return this.http.put<UserResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/users/${user.userID}`, dtoToSending).
+    return this.http.put<UserResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/users/${user.userId}`, dtoToSending).
       pipe(map(responseDTO => UserResponseDTO.toModel(responseDTO)));
   }
 

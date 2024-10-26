@@ -57,15 +57,15 @@ export class DepartmentService {
    * @returns model of updated department
    */
   public updateDepartment(department: DepartmentModel): Observable<DepartmentModel> {
-    if (department.departmentID == undefined)
-      return throwError(() => new Error('departmentID is undefined'));
+    if (department.departmentId == undefined)
+      return throwError(() => new Error('departmentId is undefined'));
 
     let dtoToSending: UpdateDepartmentRequestDTO = {
-      departmentID: department.departmentID,
+      departmentId: department.departmentId,
       departmentName: department.departmentName,
     }
 
-    return this.http.put<DepartmentResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/${department.departmentID}`, dtoToSending).
+    return this.http.put<DepartmentResponseDTO>(`${this.appSettings.baseUrlAPI}/api/v1/departments/${department.departmentId}`, dtoToSending).
       pipe(map(departmentDTO => DepartmentResponseDTO.toModel(departmentDTO)));
   }
 
